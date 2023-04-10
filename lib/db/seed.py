@@ -5,37 +5,48 @@ from sqlalchemy.orm import sessionmaker
 
 from models import (Locker, Instrument, Student)
 
-if __name__ == "__main__":
-    engine = create_engine("sqlite:///instrument_lockers.db")
-    Session = sessionmaker(bind=engine)
-    session = Session()
+fake = Faker()
 
+engine = create_engine("sqlite:///band_lockers.db")
+Session = sessionmaker(bind=engine)
+session = Session()
+
+def delete_records():
     session.query(Locker).delete()
     session.query(Instrument).delete()
     session.query(Student).delete()
-
-    locker2 = Locker(
-        number = 1,
-        combination = "00-00-00",
-        student_id = 2
-    )
-    session.add(locker2)
     session.commit()
 
-    olivia = Student(
-        first_name = "Olivia",
-        last_name = "Vaughn",
-        grade_level = 9
-    )
-    session.add(olivia)
-    session.commit()
+def create_records():
+    # students
+    grade_levels = [9, 10, 11, 12]
+    students = [Student(
+        first_name=f'{fake.first_name()}',
+        last_name=f'{fake.last_name()}',
+        grade_level=random.choice(grade_levels)
+    ) for i in range(80)]
 
-    flute = Instrument(
-        type = "Flute",
-        student_id = 2
-    )
-    session.add(flute)
+    # lockers
+    lockers = [Locker(
+        number = fake.unique.random_int(min=1, max=200),
+        combination = "hello",
+        student_id = fake.random_int(min=1, max=80)
+    ) for i in range(100)]
+
+    # instruments
+    instrument_types = ["Flute", "Oboe", "Alto Saxophone", "Tenor Saxophone", "Bari Saxophone", "French Horn", "Bassoon", "Bass Clarinet", "Trumpet", "Trombone", "Euphonum", "Tuba"]
+    instruments = [Instrument(
+        type = random.choice(instrument_types),
+        student_id = fake.random_int(min=1, max=80)
+    ) for i in range(80)]
+
+    session.add_all(students + lockers + instruments)
     session.commit()
+    return students, lockers, instruments
+
+if __name__ == "__main__":
+    delete_records()
+    create_records()
 
 
     session.close()
