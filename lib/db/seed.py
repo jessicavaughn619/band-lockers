@@ -1,3 +1,5 @@
+from faker import Faker
+import random
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -14,7 +16,8 @@ if __name__ == "__main__":
 
     locker2 = Locker(
         number = 1,
-        combination = "00-00-00"
+        combination = "00-00-00",
+        student_id = 2
     )
     session.add(locker2)
     session.commit()
