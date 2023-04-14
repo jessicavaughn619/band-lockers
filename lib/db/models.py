@@ -25,13 +25,19 @@ class Locker(Base):
         + f'Combination: {self.combination}'
     
     def print_combo_by_locker_number(session, locker_number):
-        combo = session.query(Locker.combination).filter_by(number=locker_number)
+        combo = session.query(Locker).filter_by(number=locker_number)
         print([record for record in combo])
 
     def print_combo_by_last_name(session, last_name):
-        student = session.query(Student).filter_by(last_name=last_name)
-        combo = session.query(Locker.combination).filter_by(student_id=student)
-        print([record for record in combo])
+        student = session.get(Student, last_name)
+        locker = session.query(Locker).filter_by(student_id=keller.id)
+
+# Student.id returning Locker.id = student.id, needs to return Locker.student_id = student.id
+        combo = [session.get(Locker, student.id) for student in student]
+        if combo:
+            print([record for record in combo])
+        if not combo:
+            print("This student does not have a locker assigned.")
 
     
 class Instrument(Base):
