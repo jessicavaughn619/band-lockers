@@ -24,6 +24,16 @@ class Locker(Base):
         + f'Number: {self.number} ' \
         + f'Combination: {self.combination}'
     
+    def print_combo_by_locker_number(session, locker_number):
+        combo = session.query(Locker.combination).filter_by(number=locker_number)
+        print([record for record in combo])
+
+    def print_combo_by_last_name(session, last_name):
+        student = session.query(Student).filter_by(last_name=last_name)
+        combo = session.query(Locker.combination).filter_by(student_id=student)
+        print([record for record in combo])
+
+    
 class Instrument(Base):
     __tablename__ = "instruments"
     __table_args__ = (PrimaryKeyConstraint("id"), )

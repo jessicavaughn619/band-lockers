@@ -29,7 +29,7 @@ def create_records():
     # lockers
     lockers = [Locker(
         number = fake.unique.random_int(min=1, max=200),
-        combination = "hello",
+        combination = f'{fake.random_int(min=0, max=39)}-{fake.random_int(min=0, max=39)}-{fake.random_int(min=0, max=39)}',
         student_id = fake.random_int(min=1, max=80)
     ) for i in range(100)]
 
