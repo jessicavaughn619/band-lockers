@@ -1,4 +1,4 @@
-from sqlalchemy import PrimaryKeyConstraint, Column, Integer, String, MetaData, ForeignKey, select
+from sqlalchemy import PrimaryKeyConstraint, Column, Integer, String, MetaData, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 
 convention = {
@@ -82,15 +82,14 @@ class Student(Base):
         + f'Last Name: {self.last_name} ' \
         + f'Grade Level: {self.grade_level}'
     
-    @classmethod
-    def delete_seniors(session):
-        seniors = session.query(Student).filter(Student.grade_level == 12)
-        session.delete(seniors)
-        session.commit()
+    # def delete_seniors(session):
+    #     seniors = session.query(Student).filter(Student.grade_level == 12)
+    #     session.delete(seniors)
+    #     session.commit()
     
-    def increase_grade_level(session):
-        session.query(Student).update({Student.grade_level: Student.grade_level + 1})
-        print("Increased all student grade levels by one year.")
+    # def increase_grade_level(session):
+    #     session.query(Student).update({Student.grade_level: Student.grade_level + 1})
+    #     print("Increased all student grade levels by one year.")
     
     def count_students_by_grade(session, grade):
         grade_count = (session.query(Student).filter(Student.grade_level == grade).count())
