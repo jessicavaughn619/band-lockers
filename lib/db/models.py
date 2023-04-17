@@ -48,8 +48,6 @@ class Instrument(Base):
     def __repr__(self):
         return f'Id: {self.id} ' \
         + f'Type: {self.type}'
-    
-# Need to add lowercase method
 
     def count_instruments(session, instrument):
         instrument_count = session.query(Instrument).filter(Instrument.type.like(instrument)).count()
@@ -82,8 +80,18 @@ class Student(Base):
         + f'Grade Level: {self.grade_level}'
     
     @classmethod
+    def delete_seniors(session):
+        seniors = session.query(Student).filter(Student.grade_level == 12)
+        session.delete(seniors)
+        session.commit()
+    
+    def increase_grade_level(session):
+        session.query(Student).update({Student.grade_level: Student.grade_level + 1})
+        print("Increased all student grade levels by one year.")
+    
     def count_students_by_grade(session, grade):
-        print(session.query(Student).filter_by(grade_level=grade).count())
+        grade_count = (session.query(Student).filter(Student.grade_level == grade).count())
+        print(f"There are {grade_count} student(s) in grade {grade}.")
 
     def find_by_last_name(session, last_name):
         print(session.query(Student).filter(Student.last_name == last_name).all())
