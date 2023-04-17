@@ -25,8 +25,11 @@ class Locker(Base):
         + f'Combination: {self.combination}'
     
     def print_combo_by_locker_number(session, locker_number):
-        combo = select(Locker).filter_by(number=locker_number)
-        print([record for record in combo])
+        combo = session.query(Locker).filter(Locker.number == locker_number).first()
+        if combo:
+            print(combo)
+        else:
+            print("There is no matching locker number in the database.")
 
     def print_combo_by_last_name(session, last_name):
         student = (session.query(Student).filter(Student.last_name == last_name).first())
