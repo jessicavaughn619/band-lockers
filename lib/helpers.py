@@ -1,2 +1,1 @@
-def cli():
-    print("Hello World!")
+import click
