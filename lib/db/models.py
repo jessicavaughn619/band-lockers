@@ -51,9 +51,12 @@ class Instrument(Base):
     
 # Need to add lowercase method
 
-    @classmethod
     def count_instruments(session, instrument):
-        print(session.query(Instrument).filter_by(type=instrument).count())
+        instrument_count = session.query(Instrument).filter(Instrument.type.like(instrument)).count()
+        if instrument_count > 0:
+            print(f"There are {instrument_count} {instrument}(s) currently assigned to students.")
+        if instrument_count == 0:
+            print("None of this instrument type are currently assigned to students.")
 
     def print_student_instruments(session, last_name):
         student = session.query(Student).filter(Student.last_name == last_name).first()

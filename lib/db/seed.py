@@ -33,7 +33,7 @@ def create_records():
     ) for i in range(100)]
 
     # instruments
-    instrument_types = ["Flute", "Oboe", "Clarinet", "Alto Saxophone", "Tenor Saxophone", "Bari Saxophone", "French Horn", "Bassoon", "Bass Clarinet", "Trumpet", "Trombone", "Euphonium", "Tuba", "Percussion"]
+    instrument_types = ["Flute", "Oboe", "Clarinet", "Alto Saxophone", "Tenor Saxophone", "Bari Saxophone", "French Horn", "Bassoon", "Bass Clarinet", "Trumpet", "Trombone", "Euphonium", "Tuba"]
     instruments = [Instrument(
         type = random.choice(instrument_types),
         student_id = fake.random_int(min=1, max=80)
