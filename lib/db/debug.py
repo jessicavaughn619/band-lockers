@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine, select
+from sqlalchemy.orm import Session
 
 from models import (Locker, Instrument, Student)
 
 if __name__ == '__main__':
     engine = create_engine("sqlite:///band_lockers.db")
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    session = Session(engine, future=True)
 
 
 

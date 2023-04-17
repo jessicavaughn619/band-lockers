@@ -1,15 +1,14 @@
 from faker import Faker
 import random
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session
 
 from models import (Locker, Instrument, Student)
 
 fake = Faker()
 
 engine = create_engine("sqlite:///band_lockers.db")
-Session = sessionmaker(bind=engine)
-session = Session()
+session = Session(engine, future=True)
 
 def delete_records():
     session.query(Locker).delete()
