@@ -55,10 +55,13 @@ class Instrument(Base):
     def count_instruments(session, instrument):
         print(session.query(Instrument).filter_by(type=instrument).count())
 
-    def student_instruments(session, last_name):
+    def print_student_instruments(session, last_name):
         student = session.query(Student).filter(Student.last_name == last_name).first()
-        instrument = [session.get(Instrument, student.id).filter_by(student_id=student.id) for student in student]
-        print(instrument)
+        instruments = (session.query(Instrument).filter(Instrument.student_id == student.id).all())
+        if instruments:
+            print(instruments)
+        else:
+            print("There are no instruments assigned to a student matching the last name entered.")
     
 class Student(Base):
     __tablename__ = "students"
