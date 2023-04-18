@@ -13,20 +13,26 @@ from db.models import Instrument, Locker, Student
 @click.command()
 @click.option('--name', prompt='Enter Your Name',
               help='The person to greet.')
+
 def greet(name):
     """This script greets you."""
     click.echo(" ")
     click.echo(f"~~ Welcome to Bando, {name}! ~~")
     click.echo(" ")
-    click.echo("What would you like to do next?")
+    click.echo("Here are some options to get started:")
     click.echo(" ")
-
+    click.echo("Press S to search for information in the inventory.")
+    click.echo("Press A to add new data to the inventory.")
+    click.echo(" ")
+    
+@click.command()
 @click.option('--instrument', prompt='Instrument type',
               help='Instrument to count.')
+
 def count(instrument):
     """This script counts instruments."""
     Instrument.count_instruments(instrument=instrument)
-    click.echo(f"What a cool {instrument}")
+    click.echo(f"What a cool {instrument}!")
 
 class Cli:
     def __init__(self):
@@ -35,9 +41,10 @@ class Cli:
         self.instruments = [instrument for instrument in session.query(Instrument)]
         self.start()
 
-    def start(self):
+    def start(self, user_input):
         greet()
-        count()
+        if user_input ==
+
 
 if __name__ == "__main__":
     engine = create_engine("sqlite:///db/band_lockers.db")
