@@ -7,4 +7,4 @@ from db.models import Instrument
 def count(instrument):
     """This script counts instruments."""
     Instrument.count_instruments(instrument=instrument)
-    click.echo(f"What a cool {instrument}!")
+    click.echo(f"What a cool {instrument}")
