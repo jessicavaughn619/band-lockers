@@ -1,5 +1,6 @@
 from sqlalchemy import PrimaryKeyConstraint, Column, Integer, String, MetaData, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
+import pandas
 
 convention = {
     "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
@@ -34,9 +35,13 @@ class Locker(Base):
     def print_combo_by_last_name(session, last_name):
         student = (session.query(Student).filter(Student.last_name == last_name).first())
         if student:
-            print(session.query(Locker).filter(Locker.student_id == student.id).first())
+            student_combo = (session.query(Locker).filter(Locker.student_id == student.id).first())
+            if student_combo:
+                print(student_combo)
+            else:
+                print("There is no locker assigned to a student matching the last name entered.")
         else:
-            print("There is no locker assigned to a student matching the last name entered.")
+            print("There is no student matching this name in the database.")
 
     
 class Instrument(Base):
@@ -90,6 +95,12 @@ class Student(Base):
     # def increase_grade_level(session):
     #     session.query(Student).update({Student.grade_level: Student.grade_level + 1})
     #     print("Increased all student grade levels by one year.")
+    
+    def print_students_by_grade(session, grade):
+        students = (session.query(Student).filter(Student.grade_level == grade)).all()
+        student_data = ([(student.first_name, student.last_name )for student in students])
+        df = (pandas.DataFrame(student_data, columns=["First Name", "Last Name"]))
+        print(df)
     
     def count_students_by_grade(session, grade):
         grade_count = (session.query(Student).filter(Student.grade_level == grade).count())
