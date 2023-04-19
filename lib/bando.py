@@ -20,10 +20,11 @@ class Cli:
         print(" ")
         print("Please select from the following options:")
         print(" ")
-        print("Press S to search the database (lookup locker combos, instrument assignments, and individual students).")
-        print("Press P to print student rosters by grade level.")
-        print("Press C to create new data entries for the inventory.")
-        print("Press U to update database (assign lockers and instruments to students, remove students from database).")
+        print("Press S to search the database.")
+        print("Press P to print records.")
+        print("Press C to create new data entries.")
+        print("Press U to update database entries.")
+        print("Press D to delete database entries.")
         print(" ")
         print("Press Q to quit.")
         print(" ")
@@ -85,8 +86,10 @@ class Cli:
             else:
                 last_name = input("Enter student last name: ")
                 grade_level = input("Enter student grade level: ")
+                print(" ")
                 print("Add the following new student to the database?")
                 print(f"First Name: {first_name} Last Name: {last_name} Grade Level: {grade_level}")
+                print(" ")
                 confirm = input("n/Y: ")
                 if confirm == "n":
                     print("Student NOT added to database.")
@@ -105,8 +108,10 @@ class Cli:
             if type == "Q":
                 break
             else:
+                print(" ")
                 print("Add the following new instrument to the database?")
                 print(f"Type: {type}")
+                print(" ")
                 confirm = input("n/Y: ")
                 if confirm == "n":
                     print("Instrument NOT added to database.")
@@ -117,6 +122,40 @@ class Cli:
                     break
                 else:
                     print("Invalid entry. Please enter n/Y or press Q to exit to main menu.")
+    
+    def function4a(self, session):
+        while search_option == "a":
+            print(" ")
+            last_name = input("Enter student last name: ")
+            if last_name == "Q":
+                break
+            else:
+                print(" ")
+                print("Is this the correct student record?")
+                print(" ")
+                Student.find_by_last_name(session, last_name)
+                print(" ")
+                confirm_record = input("n/Y: ")
+                if confirm_record == "n":
+                    print("Locker assignment NOT updated.")
+                elif confirm_record == "Y":
+                    student_id = input("Enter student ID from record: ")
+                    print(" ")
+                    updated_locker = input("Enter new locker number: ")
+                    print(" ")
+                    print("Confirm assign the following locker number?")
+                    print(" ")
+                    print(f"Locker Number: {updated_locker}")
+                    confirm = input("n/Y: ")
+                    if confirm == "n":
+                        print("Locker assignment NOT updated.")
+                    elif confirm == "Y":
+                        Locker.assign_locker(session, locker=updated_locker, student_id=student_id)
+                        print("Locker assignment successfully completed!")
+                    elif confirm == "Q":
+                        break
+                    else:
+                        print("Invalid entry. Please enter n/Y or press Q to exit to main menu.")
 
 if __name__ == "__main__":
     engine = create_engine("sqlite:///db/band_lockers.db")
@@ -177,7 +216,53 @@ if __name__ == "__main__":
                 print("Add new instrument to database.")
                 Cli.function3b(search_option, session)
         elif user_choice == "U":
-            pass
+            print(" ")
+            print("UPDATE DATA ENTRIES:")
+            print(" ")
+            print("Select from the following options:")
+            print("a: Assign or reassign locker to student.")
+            print("b: Assign or reassign instrument to student.")
+            print("c: Update student information.")
+            print(" ")
+            print("Press Q to exit to main menu.")
+            print(" ")
+            search_option = input("Selection: ")
+            if search_option == "a":
+                print(" ")
+                print("Assign or reassign locker to student.")
+                Cli.function4a(search_option, session)
+            elif search_option == "b":
+                print(" ")
+                print("Assign or reassign instrument to student.")
+                Cli.function4b(search_option, session)
+            elif search_option == "c":
+                print(" ")
+                print("Update student information.")
+                Cli.function4c(search_option, session)
+        elif user_choice == "D":
+            print(" ")
+            print("DELETE DATA ENTRIES:")
+            print(" ")
+            print("Select from the following options:")
+            print("a: Delete student from database.")
+            print("b: Delete instrument from database.")
+            print("c: Update all grade levels and remove graduating seniors.")
+            print(" ")
+            print("Press Q to exit to main menu.")
+            print(" ")
+            search_option = input("Selection: ")
+            if search_option == "a":
+                print(" ")
+                print("Delete student from database.")
+                Cli.function5a(search_option, session)
+            elif search_option == "b":
+                print(" ")
+                print("Delete instrument from database.")
+                Cli.function5b(search_option, session)
+            elif search_option == "c":
+                print(" ")
+                print("Update all grade levels and remove graduating seniors.")
+                Cli.function5c(search_option, session)
         elif user_choice == "Q":
             break
         else:

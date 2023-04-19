@@ -45,11 +45,21 @@ class Locker(Base):
             if student_combo:
                 print(f'Last Name: {last_name} Locker: {student_combo.number} Combination: {student_combo.combination}')
             else:
-                print(f"Last Name: {last_name} This student does not have a locker assigned.")
+                print(f"Last Name: {last_name} | This student does not have a locker assigned.")
         else:
-            print(f"Last Name: {last_name} There is no student matching this name in the database.")
+            print(f"Last Name: {last_name} | There is no student matching this name in the database.")
 
-    
+# Assign locker method needs work - need to identify specific locker to update
+
+    def assign_locker(session, locker, student_id):
+        session.query(Locker).update({
+            Locker.number: Locker.number,
+            Locker.student_id: student_id
+            })
+        return locker
+
+
+
 class Instrument(Base):
     __tablename__ = "instruments"
     __table_args__ = (PrimaryKeyConstraint("id"), )
@@ -84,9 +94,9 @@ class Instrument(Base):
                 instrument_data = ([instrument.type for instrument in instrument])
                 print(pandas.DataFrame(instrument_data, columns=["Instrument"]))
             else:
-                print(f"Last Name: {last_name} There are no instruments assigned to a student matching the last name entered.")
+                print(f"Last Name: {last_name} | There are no instruments assigned to a student matching the last name entered.")
         else:
-            print(f"Last Name: {last_name} There is no student matching this name in the database.")
+            print(f"Last Name: {last_name} | There is no student matching this name in the database.")
     
 class Student(Base):
     __tablename__ = "students"
@@ -128,7 +138,7 @@ class Student(Base):
     def find_by_last_name(session, last_name):
         students = (session.query(Student).filter(Student.last_name == last_name).all())
         if students:
-            student_data = ([(student.first_name, student.last_name, student.grade_level) for student in students])
-            print(pandas.DataFrame(student_data, columns=["First Name", "Last Name", "Grade"]))
+            student_data = ([(student.id, student.first_name, student.last_name, student.grade_level) for student in students])
+            print(pandas.DataFrame(student_data, columns=["Id", "First Name", "Last Name", "Grade"]))
         else:
-            print(f"Last Name: {last_name} There is no student matching this name in the database.")
+            print(f"Last Name: {last_name} | There is no student matching this name in the database.")
