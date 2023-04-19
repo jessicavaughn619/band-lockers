@@ -68,11 +68,17 @@ class Instrument(Base):
 
     def print_student_instruments(session, last_name):
         student = session.query(Student).filter(Student.last_name == last_name).first()
-        instruments = (session.query(Instrument).filter(Instrument.student_id == student.id).all())
-        if instruments:
-            print(instruments)
+        if student:
+            instrument = (session.query(Instrument).filter(Instrument.student_id == student.id).all())
+            if instrument:
+                print(f"This student has the following instrument(s) assigned: ")
+                print(" ")
+                instrument_data = ([instrument.type for instrument in instrument])
+                print(pandas.DataFrame(instrument_data, columns=["Instrument"]))
+            else:
+                print(f"Last Name: {last_name} There are no instruments assigned to a student matching the last name entered.")
         else:
-            print("There are no instruments assigned to a student matching the last name entered.")
+            print(f"Last Name: {last_name} There is no student matching this name in the database.")
     
 class Student(Base):
     __tablename__ = "students"
@@ -100,13 +106,17 @@ class Student(Base):
     
     def print_students_by_grade(session, grade):
         students = (session.query(Student).filter(Student.grade_level == grade)).all()
-        student_data = ([(student.first_name, student.last_name )for student in students])
-        df = (pandas.DataFrame(student_data, columns=["First Name", "Last Name"]))
-        print(df)
+        student_data = ([(student.first_name, student.last_name) for student in students])
+        print(pandas.DataFrame(student_data, columns=["First Name", "Last Name"]))
     
     def count_students_by_grade(session, grade):
         grade_count = (session.query(Student).filter(Student.grade_level == grade).count())
         print(f"There are {grade_count} student(s) in grade {grade}.")
 
     def find_by_last_name(session, last_name):
-        print(session.query(Student).filter(Student.last_name == last_name).all())
+        students = (session.query(Student).filter(Student.last_name == last_name).all())
+        if students:
+            student_data = ([(student.first_name, student.last_name, student.grade_level) for student in students])
+            print(pandas.DataFrame(student_data, columns=["First Name", "Last Name", "Grade"]))
+        else:
+            print(f"Last Name: {last_name} There is no student matching this name in the database.")

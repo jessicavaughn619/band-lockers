@@ -18,11 +18,13 @@ class Cli:
         print(" ")
         print(f"~~ Welcome to Bando, {self.name}! ~~")
         print(" ")
-        print("Here are some options to get started:")
+        print("Please select from the following options:")
         print(" ")
         print("Press S to search the database (lookup locker combos, instrument assignments, and individual students).")
         print("Press P to print student rosters by grade level.")
         print("Press A to add new data to the inventory.")
+        print(" ")
+        print("Press Q to quit.")
         print(" ")
     
     def function2a(self, session):
@@ -33,20 +35,32 @@ class Cli:
             int_pattern = r'\d'
             regex = re.compile(int_pattern)
             match = regex.search(combo_search)
-            if match:
-                Locker.print_combo_by_locker_number(session, locker_number=combo_search)
-            elif combo_search == "Q":
+            if combo_search == "Q":
                 break
+            elif match:
+                Locker.print_combo_by_locker_number(session, locker_number=combo_search)
             elif not match:
                 Locker.print_combo_by_last_name(session, last_name=combo_search)
     
     def function2b(self, session):
         while search_option == "b":
             print(" ")
+            record = input("Enter student last name: ")
+            print(" ")
+            if record == "Q":
+                break
+            else:
+                Instrument.print_student_instruments(session, last_name=record)
 
     def function2c(self, session):
         while search_option == "c":
             print(" ")
+            record = input("Enter student last name: ")
+            print(" ")
+            if record == "Q":
+                break
+            else:
+                Student.find_by_last_name(session, last_name=record)
         
     def function5(self, session):
         while user_choice == "P":
@@ -69,39 +83,48 @@ class Cli:
 if __name__ == "__main__":
     engine = create_engine("sqlite:///db/band_lockers.db")
     session = Session(engine, future=True)
+    print(" ")
     user_input = input("Enter Your Name: ")
-    Cli(user_input)
-    user_choice = input("What would you like to do next? ")
-    if user_choice == "S":
-        print(" ")
-        print("SEARCH QUERIES:")
-        print(" ")
-        print("Select from the following options:")
-        print("a: Look up locker combinations by locker number or student last name.")
-        print("b: Look up instrument assignments by student last name.")
-        print("c: Look up individual students by student last name.")
-        print("Press Q to exit.")
-        print(" ")
-        search_option = input("Selection: ")
-        if search_option == "a":
+    while user_input:
+        Cli(user_input)
+        user_choice = input("What would you like to do next? ")
+        if user_choice == "S":
             print(" ")
-            print("Search for locker combinations by locker number or student last name.")
-            Cli.function2a(search_option, session)
-        elif search_option == "b":
+            print("SEARCH QUERIES:")
             print(" ")
-            print("Search for instrument assignments by student last name.")
-            Cli.function2b(search_option, session)
-        elif search_option == "c":
+            print("Select from the following options:")
+            print("a: Search for locker combinations by locker number or student last name.")
+            print("b: Search for instrument assignments by student last name.")
+            print("c: Search for individual students by student last name.")
             print(" ")
-            print("Search for individual students by student last name.")
-            Cli.function2c(search_option, session)
-    elif user_choice == "P":
-        print(" ")
-        print("This script prints a list of students by grade level and includes a final count of students.")
-        print("Press Q to exit.")
-        print(" ")
-        Cli.function5(user_choice, session)
-    elif user_choice == "A":
-        Cli.function6(user_choice, session)
-    elif user_choice == "I":
-        pass
+            print("Press Q to exit to main menu.")
+            print(" ")
+            search_option = input("Selection: ")
+            if search_option == "a":
+                print(" ")
+                print("Search for locker combinations by locker number or student last name.")
+                Cli.function2a(search_option, session)
+            elif search_option == "b":
+                print(" ")
+                print("Search for instrument assignments by student last name.")
+                Cli.function2b(search_option, session)
+            elif search_option == "c":
+                print(" ")
+                print("Search for individual students by student last name.")
+                Cli.function2c(search_option, session)
+        elif user_choice == "P":
+            print(" ")
+            print("Print a list of students by grade level including a final count of students.")
+            print(" ")
+            print("Press Q to exit to main menu.")
+            print(" ")
+            Cli.function5(user_choice, session)
+        elif user_choice == "A":
+            print(" ")
+            Cli.function6(user_choice, session)
+        elif user_choice == "I":
+            print(" ")
+        elif user_choice == "Q":
+            break
+        else:
+            print("Invalid option entered. Please select from the list of options or press Q to exit.")
