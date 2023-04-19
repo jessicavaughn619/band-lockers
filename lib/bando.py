@@ -27,7 +27,7 @@ class Cli:
         print("Press Q to quit.")
         print(" ")
     
-    def function2a(self, session):
+    def function1a(self, session):
         while search_option == "a":
             print(" ")
             combo_search = input("Enter locker number or student last name: ")
@@ -42,7 +42,7 @@ class Cli:
             elif not match:
                 Locker.print_combo_by_last_name(session, last_name=combo_search)
     
-    def function2b(self, session):
+    def function1b(self, session):
         while search_option == "b":
             print(" ")
             record = input("Enter student last name: ")
@@ -52,7 +52,7 @@ class Cli:
             else:
                 Instrument.print_student_instruments(session, last_name=record)
 
-    def function2c(self, session):
+    def function1c(self, session):
         while search_option == "c":
             print(" ")
             record = input("Enter student last name: ")
@@ -62,7 +62,7 @@ class Cli:
             else:
                 Student.find_by_last_name(session, last_name=record)
         
-    def function5(self, session):
+    def function2(self, session):
         while user_choice == "P":
             grade = input("Enter grade level: ")
             if grade == "9" or grade == "10" or grade == "11" or grade == "12":
@@ -75,7 +75,7 @@ class Cli:
             else:
                 print(f"You entered: {grade}, which is invalid. Please enter 9, 10, 11, or 12 to print students by grade level.")
 
-    def function6(self, session):
+    def function3(self, session):
         if user_choice == "A":
             print("You pressed A!")
 
@@ -103,27 +103,25 @@ if __name__ == "__main__":
             if search_option == "a":
                 print(" ")
                 print("Search for locker combinations by locker number or student last name.")
-                Cli.function2a(search_option, session)
+                Cli.function1a(search_option, session)
             elif search_option == "b":
                 print(" ")
                 print("Search for instrument assignments by student last name.")
-                Cli.function2b(search_option, session)
+                Cli.function1b(search_option, session)
             elif search_option == "c":
                 print(" ")
                 print("Search for individual students by student last name.")
-                Cli.function2c(search_option, session)
+                Cli.function1c(search_option, session)
         elif user_choice == "P":
             print(" ")
             print("Print a list of students by grade level including a final count of students.")
             print(" ")
             print("Press Q to exit to main menu.")
             print(" ")
-            Cli.function5(user_choice, session)
+            Cli.function2(user_choice, session)
         elif user_choice == "A":
             print(" ")
-            Cli.function6(user_choice, session)
-        elif user_choice == "I":
-            print(" ")
+            Cli.function3(user_choice, session)
         elif user_choice == "Q":
             break
         else:
