@@ -25,6 +25,10 @@ class Locker(Base):
         + f'Number: {self.number} ' \
         + f'Combination: {self.combination}'
     
+    def add_locker(session, locker):
+        session.add(locker)
+        session.commit()
+    
     def print_combo_by_locker_number(session, locker_number):
         combo = session.query(Locker).filter(Locker.number == locker_number).first()
         if combo:
@@ -58,6 +62,10 @@ class Instrument(Base):
     def __repr__(self):
         return f'Id: {self.id} ' \
         + f'Type: {self.type}'
+    
+    def add_instrument(session, instrument):
+        session.add(instrument)
+        session.commit()
 
     def count_instruments(session, instrument):
         instrument_count = session.query(Instrument).filter(Instrument.type.like(instrument)).count()
@@ -94,6 +102,10 @@ class Student(Base):
         + f'First Name: {self.first_name} ' \
         + f'Last Name: {self.last_name} ' \
         + f'Grade Level: {self.grade_level}'
+    
+    def add_student(session, student):
+        session.add(student)
+        session.commit()
     
     # def delete_seniors(session):
     #     seniors = session.query(Student).filter(Student.grade_level == 12)

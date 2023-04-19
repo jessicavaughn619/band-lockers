@@ -22,7 +22,7 @@ class Cli:
         print(" ")
         print("Press S to search the database (lookup locker combos, instrument assignments, and individual students).")
         print("Press P to print student rosters by grade level.")
-        print("Press A to add new data to the inventory.")
+        print("Press C to create new data entries for the inventory.")
         print(" ")
         print("Press Q to quit.")
         print(" ")
@@ -75,10 +75,24 @@ class Cli:
             else:
                 print(f"You entered: {grade}, which is invalid. Please enter 9, 10, 11, or 12 to print students by grade level.")
 
-    def function3(self, session):
-        if user_choice == "A":
-            print("You pressed A!")
-
+    def function3a(self, session):
+        while search_option == "a":
+            print(" ")
+            first_name = input("Enter student first name: ")
+            last_name = input("Enter student last name: ")
+            grade_level = input("Enter student grade level: ")
+            print("Add the following new student to the database?")
+            print(f"First Name: {first_name} Last Name: {last_name} Grade Level: {grade_level}")
+            confirm = input("n/Y: ")
+            if confirm == "n":
+                print("Student NOT added to database.")
+            elif confirm == "Y":
+                Student.add_student(session, Student(first_name=first_name, last_name=last_name, grade_level=grade_level))
+                print("New student successfully added to database!")
+            elif confirm == "Q":
+                break
+            else:
+                print("Invalid entry. Please enter n/Y or press Q to exit to main menu.")
 
 if __name__ == "__main__":
     engine = create_engine("sqlite:///db/band_lockers.db")
@@ -119,9 +133,30 @@ if __name__ == "__main__":
             print("Press Q to exit to main menu.")
             print(" ")
             Cli.function2(user_choice, session)
-        elif user_choice == "A":
+        elif user_choice == "C":
             print(" ")
-            Cli.function3(user_choice, session)
+            print("CREATE NEW DATA ENTRIES:")
+            print(" ")
+            print("Select from the following options:")
+            print("a: Add new student to database.")
+            print("b: Add new instrument to database.")
+            print("c: Add new locker to database.")
+            print(" ")
+            print("Press Q to exit to main menu.")
+            print(" ")
+            search_option = input("Selection: ")
+            if search_option == "a":
+                print(" ")
+                print("Add new student to database.")
+                Cli.function3a(search_option, session)
+            elif search_option == "b":
+                print(" ")
+                print("Add new instrument to database.")
+                Cli.function3b(search_option, session)
+            elif search_option == "c":
+                print(" ")
+                print("Add new locker to database.")
+                Cli.function3c(search_option, session)
         elif user_choice == "Q":
             break
         else:
