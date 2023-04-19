@@ -28,7 +28,7 @@ class Locker(Base):
     def print_combo_by_locker_number(session, locker_number):
         combo = session.query(Locker).filter(Locker.number == locker_number).first()
         if combo:
-            print(combo)
+            print(f'Locker: {combo.number} Combination: {combo.combination}')
         else:
             print("There is no matching locker number in the database.")
 
@@ -37,11 +37,11 @@ class Locker(Base):
         if student:
             student_combo = (session.query(Locker).filter(Locker.student_id == student.id).first())
             if student_combo:
-                print(student_combo)
+                print(f'Last Name: {last_name} Locker: {student_combo.number} Combination: {student_combo.combination}')
             else:
-                print("There is no locker assigned to a student matching the last name entered.")
+                print(f"Last Name: {last_name} This student does not have a locker assigned.")
         else:
-            print("There is no student matching this name in the database.")
+            print(f"Last Name: {last_name} There is no student matching this name in the database.")
 
     
 class Instrument(Base):
