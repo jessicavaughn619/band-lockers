@@ -23,6 +23,7 @@ class Cli:
         print("Press S to search the database (lookup locker combos, instrument assignments, and individual students).")
         print("Press P to print student rosters by grade level.")
         print("Press C to create new data entries for the inventory.")
+        print("Press U to update database (assign lockers and instruments to students, remove students from database).")
         print(" ")
         print("Press Q to quit.")
         print(" ")
@@ -79,20 +80,43 @@ class Cli:
         while search_option == "a":
             print(" ")
             first_name = input("Enter student first name: ")
-            last_name = input("Enter student last name: ")
-            grade_level = input("Enter student grade level: ")
-            print("Add the following new student to the database?")
-            print(f"First Name: {first_name} Last Name: {last_name} Grade Level: {grade_level}")
-            confirm = input("n/Y: ")
-            if confirm == "n":
-                print("Student NOT added to database.")
-            elif confirm == "Y":
-                Student.add_student(session, Student(first_name=first_name, last_name=last_name, grade_level=grade_level))
-                print("New student successfully added to database!")
-            elif confirm == "Q":
+            if first_name == "Q":
                 break
             else:
-                print("Invalid entry. Please enter n/Y or press Q to exit to main menu.")
+                last_name = input("Enter student last name: ")
+                grade_level = input("Enter student grade level: ")
+                print("Add the following new student to the database?")
+                print(f"First Name: {first_name} Last Name: {last_name} Grade Level: {grade_level}")
+                confirm = input("n/Y: ")
+                if confirm == "n":
+                    print("Student NOT added to database.")
+                elif confirm == "Y":
+                    Student.add_student(session, Student(first_name=first_name, last_name=last_name, grade_level=grade_level))
+                    print("New student successfully added to database!")
+                elif confirm == "Q":
+                    break
+                else:
+                    print("Invalid entry. Please enter n/Y or press Q to exit to main menu.")
+
+    def function3b(self, session):
+        while search_option == "b":
+            print(" ")
+            type = input("Enter instrument type: ")
+            if type == "Q":
+                break
+            else:
+                print("Add the following new instrument to the database?")
+                print(f"Type: {type}")
+                confirm = input("n/Y: ")
+                if confirm == "n":
+                    print("Instrument NOT added to database.")
+                elif confirm == "Y":
+                    Instrument.add_instrument(session, Instrument(type=type))
+                    print("New instrument successfully added to database!")
+                elif confirm == "Q":
+                    break
+                else:
+                    print("Invalid entry. Please enter n/Y or press Q to exit to main menu.")
 
 if __name__ == "__main__":
     engine = create_engine("sqlite:///db/band_lockers.db")
@@ -140,7 +164,6 @@ if __name__ == "__main__":
             print("Select from the following options:")
             print("a: Add new student to database.")
             print("b: Add new instrument to database.")
-            print("c: Add new locker to database.")
             print(" ")
             print("Press Q to exit to main menu.")
             print(" ")
@@ -153,10 +176,8 @@ if __name__ == "__main__":
                 print(" ")
                 print("Add new instrument to database.")
                 Cli.function3b(search_option, session)
-            elif search_option == "c":
-                print(" ")
-                print("Add new locker to database.")
-                Cli.function3c(search_option, session)
+        elif user_choice == "U":
+            pass
         elif user_choice == "Q":
             break
         else:
