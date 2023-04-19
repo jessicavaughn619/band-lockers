@@ -32,6 +32,8 @@ class Locker(Base):
         else:
             print("There is no matching locker number in the database.")
 
+# What if two or more students with same last name?
+
     def print_combo_by_last_name(session, last_name):
         student = (session.query(Student).filter(Student.last_name == last_name).first())
         if student:
