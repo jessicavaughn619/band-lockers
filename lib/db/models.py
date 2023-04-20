@@ -1,7 +1,6 @@
 from sqlalchemy import PrimaryKeyConstraint, Column, Integer, String, MetaData, ForeignKey
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.declarative import declarative_base
-import pandas
 
 convention = {
     "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
