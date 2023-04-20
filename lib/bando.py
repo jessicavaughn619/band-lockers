@@ -17,29 +17,36 @@ class Cli:
     def main_menu(self):
         print(" ")
         user_name = input("Enter Your Name: ")
-        print(" ")
-        print(f"~~ Welcome to Bando, {user_name}! ~~")
-        print(" ")
-        print("Please select from the following options:")
-        print(" ")
-        print("Press S to search the database.")
-        print("Press P to print records.")
-        print("Press C to create new data entries.")
-        print("Press U to update database entries.")
-        print("Press D to delete database entries.")
-        print(" ")
-        print("Press Q to quit.")
-        print(" ")
-        user_choice = input("What would you like to do next? ")
-        if user_choice == "S":
-            Cli.function1(self, user_choice)
-        if user_choice == "P":
-            Cli.function2(self, user_choice)
-        if user_choice == "C":
-            Cli.function3(self, user_choice)
-        if user_choice == "U":
-            pass
-
+        while user_name:
+            print(" ")
+            print(f"~~ Welcome to Bando, {user_name}! ~~")
+            print(" ")
+            print("Please select from the following options:")
+            print(" ")
+            print("Press S to search the database.")
+            print("Press P to print records.")
+            print("Press C to create new data entries.")
+            print("Press U to update database entries.")
+            print("Press D to delete database entries.")
+            print(" ")
+            print("Press Q to quit.")
+            print(" ")
+            user_choice = input("What would you like to do next? ")
+            if user_choice == "S":
+                Cli.function1(self, user_choice)
+            elif user_choice == "P":
+                Cli.function2(self, user_choice)
+            elif user_choice == "C":
+                Cli.function3(self, user_choice)
+            elif user_choice == "U":
+                Cli.function4(self, user_choice)
+            elif user_choice == "D":
+                Cli.function5(self, user_choice)
+            elif user_choice == "Q":
+                break
+            else:
+                print("Invalid option entered. Please select from the list of options or press Q to exit.")
+                
     def function1(self, user_choice):
         while user_choice == "S":
             print(" ")
@@ -117,7 +124,6 @@ class Cli:
                 print_students_by_grade(session, grade=grade)
                 print(" ")
                 count_students_by_grade(session, grade=grade)
-                print(" ")
             elif grade == "Q":
                 break
             else:
@@ -194,7 +200,33 @@ class Cli:
                 else:
                     print("Invalid entry. Please enter n/Y or press Q to exit to main menu.")
     
-    def function4a(self, session):
+    def function4(self, user_choice):
+        while user_choice == "U":
+            print(" ")
+            print("UPDATE DATA ENTRIES:")
+            print(" ")
+            print("Select from the following options:")
+            print("a: Assign or reassign locker to student.")
+            print("b: Assign or reassign instrument to student.")
+            print("c: Update student information.")
+            print(" ")
+            print("Press Q to exit to main menu.")
+            print(" ")
+            search_option = input("Selection: ")
+            if search_option == "a":
+                Cli.function4a(self, session, search_option)
+            elif search_option == "b":
+                Cli.function4b(self, session, search_option)
+            elif search_option == "c":
+                Cli.function4c(self, session, search_option)
+            elif search_option == "Q":
+                break
+            else:
+                print("Invalid option, please select a, b, c, or press Q to quit.")
+
+    def function4a(self, session, search_option):
+        print(" ")
+        print("Assign or reassign locker to student.")
         while search_option == "a":
             print(" ")
             last_name = input("Enter student last name: ")
@@ -204,7 +236,7 @@ class Cli:
                 print(" ")
                 print("Is this the correct student record?")
                 print(" ")
-                Student.find_by_last_name(session, last_name)
+                find_by_last_name(session, last_name)
                 print(" ")
                 confirm_record = input("n/Y: ")
                 if confirm_record == "n":
@@ -221,67 +253,68 @@ class Cli:
                     if confirm == "n":
                         print("Locker assignment NOT updated.")
                     elif confirm == "Y":
-                        Locker.assign_locker(session, locker=updated_locker, student_id=student_id)
+                        # assign_locker(session, locker=updated_locker, student_id=student_id)
                         print("Locker assignment successfully completed!")
                     elif confirm == "Q":
                         break
                     else:
                         print("Invalid entry. Please enter n/Y or press Q to exit to main menu.")
+    
+    def function4b(self, session, search_option):
+        print(" ")
+        print("Assign or reassign instrument to student.")
+        while search_option == "b":
+            pass
+
+    def function4c(self, session, search_option):
+        print(" ")
+        print("Update student information.")
+        while search_option == "c":
+            pass
+    
+    def function5(self, user_choice):
+        while user_choice == "D":
+            print(" ")
+            print("DELETE DATA ENTRIES:")
+            print(" ")
+            print("Select from the following options:")
+            print("a: Delete student from database.")
+            print("b: Delete instrument from database.")
+            print("c: Update all grade levels and remove graduating seniors.")
+            print(" ")
+            print("Press Q to exit to main menu.")
+            print(" ")
+            search_option = input("Selection: ")
+            if search_option == "a":
+                Cli.function5a(self, session, search_option)
+            elif search_option == "b":
+                Cli.function5b(self, session, search_option)
+            elif search_option == "c":
+                Cli.function5c(self, session, search_option)
+            elif search_option == "Q":
+                break
+            else:
+                print("Invalid option, please select a, b, c, or press Q to quit.")
+
+    def function5a(self, session, search_option):
+        print(" ")
+        print("Delete student from database.")
+        while search_option == "a":
+            pass
+
+    def function5b(self, session, search_option):
+        print(" ")
+        print("Delete instrument from database.")
+        while search_option == "b":
+            pass
+
+    def function5c(self, session, search_option):
+        print(" ")
+        print("Update all grade levels and remove graduating seniors.")
+        while search_option == "c":
+            pass
 
 if __name__ == "__main__":
     engine = create_engine("sqlite:///db/band_lockers.db")
     session = Session(engine, future=True)
     Cli()
-
-# elif user_choice == "U":
-#     print(" ")
-#     print("UPDATE DATA ENTRIES:")
-#     print(" ")
-#     print("Select from the following options:")
-#     print("a: Assign or reassign locker to student.")
-#     print("b: Assign or reassign instrument to student.")
-#     print("c: Update student information.")
-#     print(" ")
-#     print("Press Q to exit to main menu.")
-#     print(" ")
-#     search_option = input("Selection: ")
-#     if search_option == "a":
-#         print(" ")
-#         print("Assign or reassign locker to student.")
-#         Cli.function4a(search_option, session)
-#     elif search_option == "b":
-#         print(" ")
-#         print("Assign or reassign instrument to student.")
-#         Cli.function4b(search_option, session)
-#     elif search_option == "c":
-#         print(" ")
-#         print("Update student information.")
-#         Cli.function4c(search_option, session)
-# elif user_choice == "D":
-#     print(" ")
-#     print("DELETE DATA ENTRIES:")
-#     print(" ")
-#     print("Select from the following options:")
-#     print("a: Delete student from database.")
-#     print("b: Delete instrument from database.")
-#     print("c: Update all grade levels and remove graduating seniors.")
-#     print(" ")
-#     print("Press Q to exit to main menu.")
-#     print(" ")
-#     search_option = input("Selection: ")
-#     if search_option == "a":
-#         print(" ")
-#         print("Delete student from database.")
-#         Cli.function5a(search_option, session)
-#     elif search_option == "b":
-#         print(" ")
-#         print("Delete instrument from database.")
-#         Cli.function5b(search_option, session)
-#     elif search_option == "c":
-#         print(" ")
-#         print("Update all grade levels and remove graduating seniors.")
-#         Cli.function5c(search_option, session)
-# elif user_choice == "Q":
-#     pass
-# else:
-#     print("Invalid option entered. Please select from the list of options or press Q to exit.")
