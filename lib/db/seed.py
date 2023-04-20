@@ -27,10 +27,10 @@ def create_records():
 
     # lockers
     lockers = [Locker(
-        number = fake.unique.random_int(min=1, max=200),
+        number = fake.unique.random_int(min=1, max=150),
         combination = f'{fake.random_int(min=0, max=39)}-{fake.random_int(min=0, max=39)}-{fake.random_int(min=0, max=39)}',
         student_id = fake.random_int(min=1, max=80)
-    ) for i in range(100)]
+    ) for i in range(150)]
 
     # instruments
     instrument_types = ["Flute", "Oboe", "Clarinet", "Alto Saxophone", "Tenor Saxophone", "Bari Saxophone", "French Horn", "Bassoon", "Bass Clarinet", "Trumpet", "Trombone", "Euphonium", "Tuba"]
