@@ -1,4 +1,5 @@
 import pandas
+import inquirer
 from db.models import Locker, Student, Instrument
 
 # Locker methods
@@ -16,20 +17,36 @@ def print_combo_by_locker_number(session, locker_number):
 
 # What if two or more students with same last name?
 
-# Relationships - a student can have many lockers. 
-# A student has many instruments. 
-# An instrument belongs to one student. 
-# A locker belongs to a student.
-
 def print_combo_by_last_name(session, last_name):
-    student = (session.query(Student).filter(Student.last_name == last_name).first())
-    if student:
-        student_combo = (session.query(Locker).filter(Locker.student_id == student.id).all())
-        if student_combo:
-            for combo in student_combo:
-                print(f'Last Name: {last_name} Locker: {combo.number} Combination: {combo.combination}')
+    students = (session.query(Student).filter(Student.last_name == last_name).all())
+    if students:
+        if len(students) == 1:
+            student_combo = (session.query(Locker).filter(Locker.student_id == students.id).all())
+            if student_combo:
+                for combo in student_combo:
+                    print(f'Last Name: {last_name} Locker: {combo.number} Combination: {combo.combination}')
+            else:
+                print(f"Last Name: {last_name} | This student does not have a locker assigned.")
         else:
-            print(f"Last Name: {last_name} | This student does not have a locker assigned.")
+            options = []
+            print("There are multiple students with the last name: {last_name}")
+            print(" ")
+            for student in students:
+                option = (f'{last_name}, {student.first_name}', student.id)
+                options.append(option)
+            questions = [
+                inquirer.List('students',
+                              message="Please select the correct student: ",
+                              choices=options,
+                              ),
+                              ]
+            answers = inquirer.prompt(questions)
+            selection = answers['students']
+            student_combo = session.query(Locker).filter(Locker.student_id == selection).first()
+            if student_combo:
+                print(f'Last Name: {last_name} Locker: {student_combo.number} Combination: {student_combo.combination}')
+            else:
+                print(f"Last Name: {last_name} | This student does not have a locker assigned.")
     else:
         print(f"Last Name: {last_name} | There is no student matching this name in the database.")
 
