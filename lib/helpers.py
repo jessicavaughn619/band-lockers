@@ -15,8 +15,6 @@ def print_combo_by_locker_number(session, locker_number):
     else:
         print("There is no matching locker number in the database.")
 
-# What if two or more students with same last name?
-
 def print_combo_by_last_name(session, last_name):
     students = (session.query(Student).filter(Student.last_name == last_name).all())
     if students:
@@ -71,16 +69,40 @@ def count_instruments(session, instrument):
         print("None of this instrument type are currently assigned to students.")
 
 def print_student_instruments(session, last_name):
-    student = session.query(Student).filter(Student.last_name == last_name).first()
-    if student:
-        instrument = (session.query(Instrument).filter(Instrument.student_id == student.id).all())
-        if instrument:
-            print(f"This student has the following instrument(s) assigned: ")
-            print(" ")
-            instrument_data = ([instrument.type for instrument in instrument])
-            print(pandas.DataFrame(instrument_data, columns=["Instrument"]))
+    students = session.query(Student).filter(Student.last_name == last_name).all()
+    if students:
+        if len(students) == 1:
+            instrument = (session.query(Instrument).filter(Instrument.student_id == student.id).all())
+            if instrument:
+                print(f"This student has the following instrument(s) assigned: ")
+                print(" ")
+                instrument_data = ([instrument.type for instrument in instrument])
+                print(pandas.DataFrame(instrument_data, columns=["Instrument"]))
+            else:
+                print(f"Last Name: {last_name} | There are no instruments assigned to a student matching the last name entered.")
         else:
-            print(f"Last Name: {last_name} | There are no instruments assigned to a student matching the last name entered.")
+            options = []
+            print("There are multiple students with the last name: {last_name}")
+            print(" ")
+            for student in students:
+                option = (f'{last_name}, {student.first_name}', student.id)
+                options.append(option)
+            questions = [
+                inquirer.List('students',
+                                message="Please select the correct student: ",
+                                choices=options,
+                                ),
+                                ]
+            answers = inquirer.prompt(questions)
+            selection = answers['students']
+            student_instruments = session.query(Instrument).filter(Instrument.student_id == selection).all()
+            if student_instruments:
+                print(f"This student has the following instrument(s) assigned: ")
+                print(" ")
+                instruments = [instrument.type for instrument in student_instruments]
+                print(pandas.DataFrame(instruments, columns=["Instrument"]))
+            else:
+                print(f"Last Name: {last_name} | There are no instruments assigned to a student matching the last name entered.")
     else:
         print(f"Last Name: {last_name} | There is no student matching this name in the database.")
 
@@ -111,7 +133,7 @@ def count_students_by_grade(session, grade):
 def find_by_last_name(session, last_name):
     students = (session.query(Student).filter(Student.last_name == last_name).all())
     if students:
-        student_data = ([(student.id, student.first_name, student.last_name, student.grade_level) for student in students])
-        print(pandas.DataFrame(student_data, columns=["Id", "First Name", "Last Name", "Grade"]))
+        student_data = ([(student.last_name, student.first_name, student.grade_level) for student in students])
+        print(pandas.DataFrame(student_data, columns=["Last Name", "First Name", "Grade"]))
     else:
         print(f"Last Name: {last_name} | There is no student matching this name in the database.")

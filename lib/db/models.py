@@ -57,5 +57,5 @@ class Student(Base):
         + f'Grade Level: {self.grade_level}'
     
     def test(session, last_name):
-        student = session.query(Student.lockers).filter(Student.last_name == last_name).first()
+        student = session.query(Student).filter(Student.last_name == last_name).first()
         print([record for record in student])
