@@ -1,5 +1,5 @@
 from faker import Faker
-import random
+from random import choice as rc
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
@@ -22,7 +22,7 @@ def create_records():
     students = [Student(
         first_name=f'{fake.first_name()}',
         last_name=f'{fake.last_name()}',
-        grade_level=random.choice(grade_levels)
+        grade_level=rc(grade_levels)
     ) for i in range(80)]
 
     # lockers
@@ -35,13 +35,21 @@ def create_records():
     # instruments
     instrument_types = ["Flute", "Oboe", "Clarinet", "Alto Saxophone", "Tenor Saxophone", "Bari Saxophone", "French Horn", "Bassoon", "Bass Clarinet", "Trumpet", "Trombone", "Euphonium", "Tuba"]
     instruments = [Instrument(
-        type = random.choice(instrument_types),
+        type = rc(instrument_types),
         student_id = fake.random_int(min=1, max=80)
     ) for i in range(80)]
 
     session.add_all(students + lockers + instruments)
     session.commit()
     return students, lockers, instruments
+
+def relate_records(students, lockers, instruments):
+    for student in students:
+        student.locker = rc(lockers)
+        student.instrument = rc(instruments)
+    
+    session.add_all(students)
+    session.commit()
 
 if __name__ == "__main__":
     delete_records()

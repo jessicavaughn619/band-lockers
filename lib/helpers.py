@@ -24,9 +24,10 @@ def print_combo_by_locker_number(session, locker_number):
 def print_combo_by_last_name(session, last_name):
     student = (session.query(Student).filter(Student.last_name == last_name).first())
     if student:
-        student_combo = (session.query(Locker).filter(Locker.student_id == student.id).first())
+        student_combo = (session.query(Locker).filter(Locker.student_id == student.id).all())
         if student_combo:
-            print(f'Last Name: {last_name} Locker: {student_combo.number} Combination: {student_combo.combination}')
+            for combo in student_combo:
+                print(f'Last Name: {last_name} Locker: {combo.number} Combination: {combo.combination}')
         else:
             print(f"Last Name: {last_name} | This student does not have a locker assigned.")
     else:
