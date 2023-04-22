@@ -10,5 +10,4 @@ if __name__ == '__main__':
     session = Session(engine, future=True)
 
 
-
     import ipdb; ipdb.set_trace()

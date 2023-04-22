@@ -55,3 +55,7 @@ class Student(Base):
         + f'First Name: {self.first_name} ' \
         + f'Last Name: {self.last_name} ' \
         + f'Grade Level: {self.grade_level}'
+    
+    def test(session, last_name):
+        student = session.query(Student.lockers).filter(Student.last_name == last_name).first()
+        print([record for record in student])
