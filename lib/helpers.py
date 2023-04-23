@@ -19,12 +19,14 @@ def print_combo_by_last_name(session, last_name):
     students = (session.query(Student).filter(Student.last_name == last_name).all())
     if students:
         if len(students) == 1:
-            student_combo = (session.query(Locker).filter(Locker.student_id == students.id).all())
-            if student_combo:
-                for combo in student_combo:
-                    print(f'Last Name: {last_name} Locker: {combo.number} Combination: {combo.combination}')
+            student_combos = (session.query(Locker).join(Student).where(Student.id == Locker.student_id).filter(Student.last_name == last_name).all())
+            if student_combos:
+                print("The selected student has the following locker(s) assigned: ")
+                print(" ")
+                for combo in student_combos:
+                    print(f'Locker: {combo.number} Combination: {combo.combination}')
             else:
-                print(f"Last Name: {last_name} | This student does not have a locker assigned.")
+                print(f"Last Name: {last_name} | This student does not have any lockers assigned.")
         else:
             options = []
             print("There are multiple students with the last name: {last_name}")
@@ -40,11 +42,15 @@ def print_combo_by_last_name(session, last_name):
                               ]
             answers = inquirer.prompt(questions)
             selection = answers['students']
-            student_combo = session.query(Locker).filter(Locker.student_id == selection).first()
-            if student_combo:
-                print(f'Last Name: {last_name} Locker: {student_combo.number} Combination: {student_combo.combination}')
+
+            student_combos = (session.query(Locker).join(Student).where(Student.id == Locker.student_id).filter(Locker.student_id == selection).all())
+            if student_combos:
+                print("The selected student has the following locker(s) assigned: ")
+                print(" ")
+                for combo in student_combos:
+                    print(f'Locker: {combo.number} Combination: {combo.combination}')
             else:
-                print(f"Last Name: {last_name} | This student does not have a locker assigned.")
+                print(f"Last Name: {last_name} | This student does not have any lockers assigned.")
     else:
         print(f"Last Name: {last_name} | There is no student matching this name in the database.")
 
