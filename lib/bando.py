@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 import re
 from db.models import Instrument, Locker, Student
-from helpers import (print_combo_by_locker_number, print_combo_by_last_name, print_student_instruments, find_by_last_name, print_students_by_grade, count_students_by_grade, add_instrument, add_student, count_instruments)
+from helpers import (print_combo_by_locker_number, print_combo_by_last_name, print_student_instruments, find_by_last_name, print_students_by_grade, count_students_by_grade, add_instrument, add_student, count_instruments, assign_locker)
 
 class Cli:
     def __init__(self):
@@ -275,32 +275,7 @@ class Cli:
             if last_name == "Q":
                 break
             else:
-                print(" ")
-                print("Is this the correct student record?")
-                print(" ")
-                find_by_last_name(session, last_name)
-                print(" ")
-                confirm_record = input("n/Y: ")
-                if confirm_record == "n":
-                    print("Locker assignment NOT updated.")
-                elif confirm_record == "Y":
-                    student_id = input("Enter student ID from record: ")
-                    print(" ")
-                    updated_locker = input("Enter new locker number: ")
-                    print(" ")
-                    print("Confirm assign the following locker number?")
-                    print(" ")
-                    print(f"Locker Number: {updated_locker}")
-                    confirm = input("n/Y: ")
-                    if confirm == "n":
-                        print("Locker assignment NOT updated.")
-                    elif confirm == "Y":
-                        # assign_locker(session, locker=updated_locker, student_id=student_id)
-                        print("Locker assignment successfully completed!")
-                    elif confirm == "Q":
-                        break
-                    else:
-                        print("Invalid entry. Please enter n/Y or press Q to exit to main menu.")
+                assign_locker(session, last_name)
     
     def function4b(self, session, search_option):
         print(" ")

@@ -56,10 +56,36 @@ def print_combo_by_last_name(session, last_name):
 
 # Assign locker method needs work - need to identify specific locker to update
 
-def assign_locker(session, id, student_id):
-    session.query(Locker).filter(Locker.id == id).update({
-        Locker.student_id: student_id
-        })
+def assign_locker(session, last_name):
+    students = (session.query(Student).filter(Student.last_name == last_name).all())
+    if students:
+        options = []
+        for student in students:
+            option = (f'{last_name}, {student.first_name}', student.id)
+            options.append(option)
+        questions = [
+            inquirer.List('students',
+                            message="Please select the correct student: ",
+                            choices=options,
+                            ),
+                            ]
+        answers = inquirer.prompt(questions)
+        selection = answers['students']
+        print(" ")
+        locker = input("Enter locker number to assign to student: ")
+        print(" ")
+        confirm = input(f"Confirm assign {last_name} to locker {locker}? n/Y: ")
+        if confirm == "Y":
+            session.query(Locker).filter(Locker.number == locker).update({
+                Locker.student_id: selection
+                })
+            print("Locker assignment successfully updated!")
+        elif confirm == "n":
+            print("Locker assignment NOT updated.")
+        else:
+            print("Invalid entry. Please enter n/Y.")
+    else:
+        print(f"Last Name: {last_name} | There is no student matching this name in the database.")
 
 # Instrument methods
 
