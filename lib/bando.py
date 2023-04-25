@@ -8,7 +8,7 @@ from helpers import (print_combo_by_locker_number, print_combo_by_last_name,
                      print_student_instruments, find_by_last_name, print_students_by_grade, 
                      count_students_by_grade, add_instrument, add_student, count_instruments, 
                      assign_locker, assign_instrument, update_student_info, 
-                     increase_grade_levels, delete_student_record)
+                     increase_grade_levels, delete_student_record, delete_instrument_record)
 
 class Cli:
     def __init__(self):
@@ -360,19 +360,21 @@ class Cli:
             last_name = input("Enter student last name: ")
             delete_student_record(session, last_name)
 
-
     def function5b(self, session, search_option):
         print(" ")
         print("Delete individual instrument from database.")
         while search_option == "b":
             print(" ")
             instrument_id = input("Enter instrument ID: ")
+            delete_instrument_record(session, instrument_id)
 
     def function5c(self, session, search_option):
         print(" ")
         print("Delete students by grade level.")
         while search_option == "c":
             print(" ")
+            grade = input("Enter grade level to delete: ")
+            delete_students_by_grade(session, grade)
 
 
 if __name__ == "__main__":

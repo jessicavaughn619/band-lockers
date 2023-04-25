@@ -172,6 +172,24 @@ def assign_instrument(session, last_name):
     else:
         print(f"Last Name: {last_name} | There is no student matching this name in the database.")
 
+def delete_instrument_record(session, id):
+    instrument = session.query(Instrument).filter(Instrument.id == id).first()
+    print(" ")
+    confirm = input(f"Confirm delete the following instrument: Id: {id} Instrument: {instrument.type}? n/Y: ")
+    if confirm == "Y":
+        print(" ")
+        confirm_confirm = input("WARNING: Selecting Y will delete this entry from the database. Press n/Y to confirm: ")
+        if confirm_confirm == "Y":
+            session.delete(instrument)
+            session.commit()
+            print(" ")
+            print("Instrument record successfully deleted.")
+        else:
+            print(" ")
+            print("Instrument record NOT deleted.")
+    else:
+        print(" ")
+        print("Instrument record NOT deleted.")
 
 # Student methods
 #  
@@ -268,8 +286,11 @@ def delete_student_record(session, last_name):
                 print(" ")
                 print("Student record successfully deleted!")
             else:
+                print(" ")
                 print("Student record NOT deleted.")
         else:
+            print(" ")
             print("Student record NOT deleted.")
     else:
+        print(" ")
         print(f"Last Name: {last_name} | There is no student matching this name in the database.")
