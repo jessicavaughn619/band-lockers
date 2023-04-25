@@ -21,7 +21,8 @@ def function2a(session, search_option):
 def print_students_by_grade(session, grade):
     students = (session.query(Student).filter(Student.grade_level == grade)).all()
     student_data = ([(student.first_name, student.last_name) for student in students])
-    print(pandas.DataFrame(student_data, columns=["First Name", "Last Name"]))
+    df = (pandas.DataFrame(student_data, columns=["First Name", "Last Name"]))
+    print(df.to_string(index=False))
 
 def count_students_by_grade(session, grade):
     grade_count = (session.query(Student).filter(Student.grade_level == grade).count())

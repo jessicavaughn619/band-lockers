@@ -88,7 +88,8 @@ def print_student_instruments(session, last_name):
                     print(f"This student has the following instrument(s) assigned: ")
                     print(" ")
                     instrument_data = ([instrument.type for instrument in instrument])
-                    print(pandas.DataFrame(instrument_data, columns=["Instrument"]))
+                    df = (pandas.DataFrame(instrument_data, columns=["Instrument"]))
+                    print(df.to_string(index=False))
                 else:
                     print(f"Last Name: {last_name} | There are no instruments assigned to a student matching the last name entered.")
         else:
@@ -111,7 +112,8 @@ def print_student_instruments(session, last_name):
                 print(f"This student has the following instrument(s) assigned: ")
                 print(" ")
                 instruments = [instrument.type for instrument in student_instruments]
-                print(pandas.DataFrame(instruments, columns=["Instrument"]))
+                df = (pandas.DataFrame(instruments, columns=["Instrument"]))
+                print(df.to_string(index=False))
             else:
                 print(f"Last Name: {last_name} | There are no instruments assigned to a student matching the last name entered.")
     else:
@@ -133,6 +135,7 @@ def find_by_last_name(session, last_name):
     students = (session.query(Student).filter(Student.last_name == last_name).all())
     if students:
         student_data = ([(student.last_name, student.first_name, student.grade_level) for student in students])
-        print(pandas.DataFrame(student_data, columns=["Last Name", "First Name", "Grade"]))
+        df = (pandas.DataFrame(student_data, columns=["Last Name", "First Name", "Grade"]))
+        print(df.to_string(index=False))
     else:
         print(f"Last Name: {last_name} | There is no student matching this name in the database.")
