@@ -3,12 +3,12 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from db.models import Instrument, Locker, Student
-from helpers import (print_students_by_grade, 
-                     count_students_by_grade, add_instrument, add_student, count_instruments, 
+from helpers import (add_instrument, add_student, 
                      assign_locker, assign_instrument, update_student_info, 
                      increase_grade_levels, delete_student_record, delete_instrument_record, 
                      delete_students_by_grade)
 from subfunctions.function1 import (function1a, function1b, function1c)
+from subfunctions.function2 import (function2a, function2b)
 
 class Cli:
     def __init__(self):
@@ -90,47 +90,13 @@ class Cli:
             print(" ")
             search_option = input("Selection: ")
             if search_option == "a":
-                Cli.function2a(self, session, search_option)
+                function2a(session, search_option)
             elif search_option == "b":
-                Cli.function2b(self, session, search_option)
+                function2b(session, search_option)
             elif search_option == "Q":
                 break
             else:
                 print("Invalid option, please select a, b, or press Q to quit.")
-
-    def function2a(self, session, search_option):
-        print(" ")
-        print("Print a list of students by grade level including a final count of students.")
-        print(" ")
-        print("Press Q to exit to main menu.")
-        while search_option == "a":
-            print(" ")
-            grade = input("Enter grade level: ")
-            if grade == "9" or grade == "10" or grade == "11" or grade == "12":
-                print_students_by_grade(session, grade=grade)
-                print(" ")
-                count_students_by_grade(session, grade=grade)
-            elif grade == "Q":
-                break
-            else:
-                print(f"You entered: {grade}, which is invalid. Please enter 9, 10, 11, or 12 to print students by grade level.")
-
-    def function2b(self, session, search_option):
-        print(" ")
-        print("Count the number of instruments in inventory.")
-        print(" ")
-        print("Press Q to exit to main menu.")
-        while search_option == "b":
-            print(" ")
-            instrument = input("Enter instrument type: ")
-            instrument_types = ["Flute", "Oboe", "Clarinet", "Alto Saxophone", "Tenor Saxophone", "Bari Saxophone", "French Horn", "Bassoon", "Bass Clarinet", "Trumpet", "Trombone", "Euphonium", "Tuba"]
-            if instrument in instrument_types:
-                print(" ")
-                count_instruments(session, instrument=instrument)
-            elif instrument == "Q":
-                break
-            else:
-                print(f"You entered: {instrument}, which is invalid. Please select from the following list of instruments: {instrument_types}")
 
     def function3(self, user_choice):
         while user_choice == "C":
