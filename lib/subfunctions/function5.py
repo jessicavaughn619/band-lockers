@@ -4,10 +4,13 @@ import inquirer
 def function5a(session, search_option):
     print(" ")
     print("Delete individual student from database.")
-    while search_option == "a":
+    while search_option:
         print(" ")
         last_name = input("Enter student last name: ")
-        delete_student_record(session, last_name)
+        if last_name == "Q":
+            break
+        else:
+            delete_student_record(session, last_name)
 
 def delete_student_record(session, last_name):
     students = (session.query(Student).filter(Student.last_name == last_name).all())
@@ -50,55 +53,70 @@ def delete_student_record(session, last_name):
 def function5b(session, search_option):
     print(" ")
     print("Delete individual instrument from database.")
-    while search_option == "b":
+    while search_option:
         print(" ")
         instrument_id = input("Enter instrument ID: ")
-        delete_instrument_record(session, instrument_id)
+        if instrument_id == "Q":
+            break
+        else:
+            delete_instrument_record(session, instrument_id)
 
 def delete_instrument_record(session, id):
     instrument = session.query(Instrument).filter(Instrument.id == id).first()
-    print(" ")
-    confirm = input(f"Confirm delete the following instrument: Id: {id} Instrument: {instrument.type}? n/Y: ")
-    if confirm == "Y":
+    while instrument:
         print(" ")
-        confirm_confirm = input("WARNING: Selecting Y will delete this entry from the database. Press n/Y to confirm: ")
-        if confirm_confirm == "Y":
-            session.delete(instrument)
-            session.commit()
+        confirm = input(f"Confirm delete the following instrument: Id: {id} Instrument: {instrument.type}? n/Y: ")
+        if confirm == "Y":
             print(" ")
-            print("Instrument record successfully deleted.")
+            confirm_confirm = input("WARNING: Selecting Y will delete this entry from the database. Press n/Y to confirm: ")
+            if confirm_confirm == "Y":
+                session.delete(instrument)
+                session.commit()
+                print(" ")
+                print("Instrument record successfully deleted.")
+            elif confirm_confirm == "Q":
+                break
+            else:
+                print(" ")
+                print("Instrument record NOT deleted.")
+        elif confirm == "Q":
+            break
         else:
             print(" ")
             print("Instrument record NOT deleted.")
-    else:
-        print(" ")
-        print("Instrument record NOT deleted.")
 
 def function5c(session, search_option):
     print(" ")
     print("Delete students by grade level.")
-    while search_option == "c":
+    while search_option:
         print(" ")
         grade = input("Enter grade level to delete: ")
-        delete_students_by_grade(session, grade)
+        if grade == "Q":
+            break
+        else:
+            delete_students_by_grade(session, grade)
 
 def delete_students_by_grade(session, grade):
     print(" ")
     students = session.query(Student).filter(Student.grade_level == grade).all()
-    if students:
+    while students:
         confirm = input(f"Confirm delete all students with grade {grade}? n/Y: ")
         if confirm == "Y":
             print(" ")
-            confirm_confirm = input(f"WARNING! Selecting Y will delete ALL student records with grade level {grade}. Press n/Y to confirm: ")
+            confirm_confirm = input(f"WARNING: Selecting Y will delete ALL student records with grade level {grade}. Press n/Y to confirm: ")
             if confirm_confirm == "Y":
                 for student in students:
                     session.delete(student)
                     session.commit()
                 print(" ")
                 print(f"Successfully deleted all student records with grade level {grade}.")
+            elif confirm_confirm == "Q":
+                break
             else:
                 print(" ")
                 print("Student records NOT deleted.") 
+        elif confirm == "Q":
+            break
         else:
             print(" ")
             print("Student records NOT deleted.")

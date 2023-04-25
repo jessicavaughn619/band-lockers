@@ -36,15 +36,15 @@ class Cli:
             print("Press Q to quit.")
             print(" ")
             user_choice = input("What would you like to do next? ")
-            if user_choice == "S":
+            if user_choice == "S" or user_choice == "s":
                 Cli.function1(self, user_choice)
-            elif user_choice == "P":
+            elif user_choice == "P" or user_choice == "p":
                 Cli.function2(self, user_choice)
-            elif user_choice == "C":
+            elif user_choice == "C" or user_choice == "c":
                 Cli.function3(self, user_choice)
-            elif user_choice == "U":
+            elif user_choice == "U" or user_choice == "u":
                 Cli.function4(self, user_choice)
-            elif user_choice == "D":
+            elif user_choice == "D" or user_choice == "d":
                 Cli.function5(self, user_choice)
             elif user_choice == "Q":
                 break
@@ -52,7 +52,7 @@ class Cli:
                 print("Invalid option entered. Please select from the list of options or press Q to exit.")
                 
     def function1(self, user_choice):
-        while user_choice == "S":
+        while user_choice:
             print(" ")
             print("SEARCH QUERIES:")
             print(" ")
@@ -77,7 +77,7 @@ class Cli:
                 print("Invalid option, please select a, b, c, or press Q to quit.")
     
     def function2(self, user_choice):
-        while user_choice == "P":
+        while user_choice:
             print(" ")
             print("PRINT QUERIES:")
             print(" ")
@@ -99,7 +99,7 @@ class Cli:
                 print("Invalid option, please select a, b, or press Q to quit.")
 
     def function3(self, user_choice):
-        while user_choice == "C":
+        while user_choice:
             print(" ")
             print("CREATE NEW DATA ENTRIES:")
             print(" ")
@@ -121,7 +121,7 @@ class Cli:
                 print("Invalid option, please select a, b, or press Q to quit.")
     
     def function4(self, user_choice):
-        while user_choice == "U":
+        while user_choice:
             print(" ")
             print("UPDATE DATA ENTRIES:")
             print(" ")
@@ -149,7 +149,7 @@ class Cli:
                 print("Invalid option, please select a, b, c, or press Q to quit.")
 
     def function5(self, user_choice):
-        while user_choice == "D":
+        while user_choice:
             print(" ")
             print("DELETE DATA ENTRIES:")
             print(" ")

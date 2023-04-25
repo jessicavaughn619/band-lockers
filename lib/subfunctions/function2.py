@@ -6,7 +6,7 @@ def function2a(session, search_option):
     print("Print a list of students by grade level including a final count of students.")
     print(" ")
     print("Press Q to exit to main menu.")
-    while search_option == "a":
+    while search_option:
         print(" ")
         grade = input("Enter grade level: ")
         if grade == "9" or grade == "10" or grade == "11" or grade == "12":
@@ -32,7 +32,7 @@ def function2b(session, search_option):
     print("Count the number of instruments in inventory.")
     print(" ")
     print("Press Q to exit to main menu.")
-    while search_option == "b":
+    while search_option:
         print(" ")
         instrument = input("Enter instrument type: ")
         instrument_types = ["Flute", "Oboe", "Clarinet", "Alto Saxophone", "Tenor Saxophone", "Bari Saxophone", "French Horn", "Bassoon", "Bass Clarinet", "Trumpet", "Trombone", "Euphonium", "Tuba"]

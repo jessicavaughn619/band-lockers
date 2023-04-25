@@ -3,7 +3,7 @@ from db.models import Student, Instrument
 def function3a(session, search_option):
     print(" ")
     print("Add new student to database.")
-    while search_option == "a":
+    while search_option:
         print(" ")
         first_name = input("Enter student first name: ")
         if first_name == "Q":
@@ -35,7 +35,7 @@ def add_student(session, student):
 def function3b(session, search_option):
     print(" ")
     print("Add new instrument to database.")
-    while search_option == "b":
+    while search_option:
         print(" ")
         type = input("Enter instrument type: ")
         if type == "Q":

@@ -6,7 +6,7 @@ import re
 def function1a(session, search_option):
     print(" ")
     print("Search for locker combinations by locker number or student last name.")
-    while search_option == "a":
+    while search_option:
         print(" ")
         combo_search = input("Enter locker number or student last name: ")
         print(" ")
@@ -69,7 +69,7 @@ def print_combo_by_last_name(session, last_name):
 def function1b(session, search_option):
     print(" ")
     print("Search for instrument assignments by student last name.")
-    while search_option == "b":
+    while search_option:
         print(" ")
         record = input("Enter student last name: ")
         print(" ")
@@ -119,7 +119,7 @@ def print_student_instruments(session, last_name):
 def function1c(session, search_option):
     print(" ")
     print("Search for individual students by student last name.")
-    while search_option == "c":
+    while search_option:
         print(" ")
         record = input("Enter student last name: ")
         print(" ")

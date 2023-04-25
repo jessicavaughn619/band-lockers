@@ -5,7 +5,7 @@ import re
 def function4a(session, search_option):
     print(" ")
     print("Assign or reassign locker to student.")
-    while search_option == "a":
+    while search_option:
         print(" ")
         last_name = input("Enter student last name: ")
         if last_name == "Q":
@@ -66,7 +66,7 @@ def assign_locker(session, last_name):
 def function4b(session, search_option):
     print(" ")
     print("Assign or reassign instrument to student.")
-    while search_option == "b":
+    while search_option:
         print(" ")
         last_name = input("Enter student last name: ")
         if last_name == "Q":
@@ -98,6 +98,7 @@ def assign_instrument(session, last_name):
             if instrument:
                 print(" ")
                 print(f"Instrument ID: {instrument_id} | Type: {instrument.type} | Last Name: {last_name}")
+                print(" ")
                 confirm = input(f"Confirm above instrument assignment? n/Y: ")
                 if confirm == "Y":
                     session.query(Instrument).filter(Instrument.id == instrument_id).update({
@@ -125,7 +126,7 @@ def assign_instrument(session, last_name):
 def function4c(session, search_option):
     print(" ")
     print("Update student information.")
-    while search_option == "c":
+    while search_option:
         print(" ")
         last_name = input("Enter student last name: ")
         if last_name == "Q":
@@ -148,12 +149,12 @@ def update_student_info(session, last_name):
                             ]
         answers = inquirer.prompt(questions)
         selection = answers['students']
-        first_name = input("Enter updated student first name: ")
         last_name = input("Enter updated student last name: ")
+        first_name = input("Enter updated student first name: ")
         grade_level = input("Enter updated student grade level: ")
         if grade_level == "9" or grade_level == "10" or grade_level == "11" or grade_level == "12":
             print(" ")
-            print(f"First Name: {first_name} | Last Name: {last_name} | Grade Level: {grade_level}")
+            print(f"Last Name: {last_name} | First Name: {first_name} | Grade Level: {grade_level}")
             print(" ")
             confirm = input(f"Confirm update above student record? n/Y: ")
             if confirm == "Y":
@@ -181,7 +182,7 @@ def update_student_info(session, last_name):
 def function4d(session, search_option):
     print(" ")
     print("Increase all student grade levels by one year.")
-    while search_option == "d":
+    while search_option:
         print(" ")
         confirm = input("Confirm update ALL student grade levels to increase by one year? n/Y: ")
         if confirm == "Y":
