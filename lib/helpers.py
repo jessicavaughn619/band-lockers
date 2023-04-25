@@ -96,7 +96,8 @@ def assign_locker(session, last_name):
                     print("Invalid entry. Please enter n/Y.")
             else:
                 print(" ")
-                print(f"Locker {locker} does not exist in the database. Please add this locker before assigning it, or choose an existing locker number to assign.")
+                print(f"Locker {locker} does not exist in the database.")
+                print("Please add this locker before assigning it, or choose an existing locker number to assign.")
         else:
             print(" ")
             print("Invalid entry. Locker number must be an integer.")
@@ -171,20 +172,35 @@ def assign_instrument(session, last_name):
         answers = inquirer.prompt(questions)
         selection = answers['students']
         instrument_id = input("Enter instrument ID to assign to student: ")
-        instrument = session.query(Instrument).filter(Instrument.id == instrument_id).first()
-        print(" ")
-        confirm = input(f"Confirm assign ID: {instrument_id} Type: {instrument.type} to Last Name: {last_name}? n/Y: ")
-        if confirm == "Y":
-            session.query(Instrument).filter(Instrument.id == instrument_id).update({
-                Instrument.student_id: selection
-                })
-            session.commit()
-            print(" ")
-            print("Instrument assignment successfully updated!")
-        elif confirm == "n":
-            print("Instrument assignment NOT updated.")
+        int_pattern = r'\d'
+        regex = re.compile(int_pattern)
+        match = regex.search(instrument_id)
+        if match:
+            instrument = session.query(Instrument).filter(Instrument.id == instrument_id).first()
+            if instrument:
+                print(" ")
+                print(f"Instrument ID: {instrument_id} | Type: {instrument.type} | Last Name: {last_name}")
+                confirm = input(f"Confirm above instrument assignment? n/Y: ")
+                if confirm == "Y":
+                    session.query(Instrument).filter(Instrument.id == instrument_id).update({
+                        Instrument.student_id: selection
+                        })
+                    session.commit()
+                    print(" ")
+                    print("Instrument assignment successfully updated!")
+                elif confirm == "n":
+                    print(" ")
+                    print("Instrument assignment NOT updated.")
+                else:
+                    print(" ")
+                    print("Invalid entry. Please enter n/Y.")
+            else:
+                print(" ")
+                print(f"Instrument with ID: {instrument_id} does not exist in the database.") 
+                print("Please add this instrument before assigning it, or choose an existing instrument ID to assign.")
         else:
-            print("Invalid entry. Please enter n/Y.")
+            print(" ")
+            print("Invalid entry. Instrument ID must be an integer.")
     else:
         print(f"Last Name: {last_name} | There is no student matching this name in the database.")
 
