@@ -242,3 +242,34 @@ def update_student_info(session, last_name):
             print("Invalid entry. Please enter n/Y.")
     else:
         print(f"Last Name: {last_name} | There is no student matching this name in the database.")
+
+def delete_student_record(session, last_name):
+    students = (session.query(Student).filter(Student.last_name == last_name).all())
+    if students:
+        options = []
+        for student in students:
+            option = (f'{last_name}, {student.first_name}', student.id)
+            options.append(option)
+        questions = [
+            inquirer.List('students',
+                            message="Please select the correct student: ",
+                            choices=options,
+                            ),
+                            ]
+        answers = inquirer.prompt(questions)
+        selection = answers['students']
+        confirm = input(f"Confirm delete student record? n/Y: ")
+        if confirm == "Y":
+            print(" ")
+            confirm_confirm = input("WARNING: Selecting Y will delete this student from the database. Press n/Y to confirm: ")
+            if confirm_confirm == "Y":
+                session.query(Student).filter(Student.id == selection).delete()
+                session.commit()
+                print(" ")
+                print("Student record successfully deleted!")
+            else:
+                print("Student record NOT deleted.")
+        else:
+            print("Student record NOT deleted.")
+    else:
+        print(f"Last Name: {last_name} | There is no student matching this name in the database.")

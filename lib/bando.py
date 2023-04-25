@@ -7,7 +7,8 @@ from db.models import Instrument, Locker, Student
 from helpers import (print_combo_by_locker_number, print_combo_by_last_name, 
                      print_student_instruments, find_by_last_name, print_students_by_grade, 
                      count_students_by_grade, add_instrument, add_student, count_instruments, 
-                     assign_locker, assign_instrument, update_student_info, increase_grade_levels)
+                     assign_locker, assign_instrument, update_student_info, 
+                     increase_grade_levels, delete_student_record)
 
 class Cli:
     def __init__(self):
@@ -333,9 +334,9 @@ class Cli:
             print(" ")
             print("Select from the following options:")
             print(" ")
-            print("a: Delete student from database.")
-            print("b: Delete instrument from database.")
-            print("c: Update all grade levels and remove graduating seniors.")
+            print("a: Delete individual student from database.")
+            print("b: Delete individual instrument from database.")
+            print("c: Delete students by grade level.")
             print(" ")
             print("Press Q to exit to main menu.")
             print(" ")
@@ -353,21 +354,26 @@ class Cli:
 
     def function5a(self, session, search_option):
         print(" ")
-        print("Delete student from database.")
+        print("Delete individual student from database.")
         while search_option == "a":
-            pass
+            print(" ")
+            last_name = input("Enter student last name: ")
+            delete_student_record(session, last_name)
+
 
     def function5b(self, session, search_option):
         print(" ")
-        print("Delete instrument from database.")
+        print("Delete individual instrument from database.")
         while search_option == "b":
-            pass
+            print(" ")
+            instrument_id = input("Enter instrument ID: ")
 
     def function5c(self, session, search_option):
         print(" ")
-        print("Update all grade levels and remove graduating seniors.")
+        print("Delete students by grade level.")
         while search_option == "c":
-            pass
+            print(" ")
+
 
 if __name__ == "__main__":
     engine = create_engine("sqlite:///db/band_lockers.db")
