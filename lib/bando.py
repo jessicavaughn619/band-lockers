@@ -2,14 +2,13 @@
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
-import re
 from db.models import Instrument, Locker, Student
-from helpers import (print_student_instruments, find_by_last_name, print_students_by_grade, 
+from helpers import (print_students_by_grade, 
                      count_students_by_grade, add_instrument, add_student, count_instruments, 
                      assign_locker, assign_instrument, update_student_info, 
                      increase_grade_levels, delete_student_record, delete_instrument_record, 
                      delete_students_by_grade)
-from subfunctions.function1 import (function1a)
+from subfunctions.function1 import (function1a, function1b, function1c)
 
 class Cli:
     def __init__(self):
@@ -69,37 +68,13 @@ class Cli:
             if search_option == "a":
                 function1a(session, search_option)
             elif search_option == "b":
-                Cli.function1b(self, session, search_option)
+                function1b(session, search_option)
             elif search_option == "c":
-                Cli.function1c(self, session, search_option)
+                function1c(session, search_option)
             elif search_option == "Q":
                 break
             else:
                 print("Invalid option, please select a, b, c, or press Q to quit.")
-
-    def function1b(self, session, search_option):
-        print(" ")
-        print("Search for instrument assignments by student last name.")
-        while search_option == "b":
-            print(" ")
-            record = input("Enter student last name: ")
-            print(" ")
-            if record == "Q":
-                break
-            else:
-                print_student_instruments(session, last_name=record)
-
-    def function1c(self, session, search_option):
-        print(" ")
-        print("Search for individual students by student last name.")
-        while search_option == "c":
-            print(" ")
-            record = input("Enter student last name: ")
-            print(" ")
-            if record == "Q":
-                break
-            else:
-                find_by_last_name(session, last_name=record)
     
     def function2(self, user_choice):
         while user_choice == "P":
