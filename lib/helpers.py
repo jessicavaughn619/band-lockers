@@ -71,7 +71,6 @@ def assign_locker(session, last_name):
                             ]
         answers = inquirer.prompt(questions)
         selection = answers['students']
-        print(" ")
         locker = input("Enter locker number to assign to student: ")
         print(" ")
         confirm = input(f"Confirm assign {last_name} to locker {locker}? n/Y: ")
@@ -79,6 +78,8 @@ def assign_locker(session, last_name):
             session.query(Locker).filter(Locker.number == locker).update({
                 Locker.student_id: selection
                 })
+            session.commit()
+            print(" ")
             print("Locker assignment successfully updated!")
         elif confirm == "n":
             print("Locker assignment NOT updated.")
@@ -137,6 +138,39 @@ def print_student_instruments(session, last_name):
                 print(f"Last Name: {last_name} | There are no instruments assigned to a student matching the last name entered.")
     else:
         print(f"Last Name: {last_name} | There is no student matching this name in the database.")
+
+def assign_instrument(session, last_name):
+    students = (session.query(Student).filter(Student.last_name == last_name).all())
+    if students:
+        options = []
+        for student in students:
+            option = (f'{last_name}, {student.first_name}', student.id)
+            options.append(option)
+        questions = [
+            inquirer.List('students',
+                            message="Please select the correct student: ",
+                            choices=options,
+                            ),
+                            ]
+        answers = inquirer.prompt(questions)
+        selection = answers['students']
+        instrument_id = input("Enter instrument ID to assign to student: ")
+        print(" ")
+        confirm = input(f"Confirm assign {last_name} to instrument {instrument_id}? n/Y: ")
+        if confirm == "Y":
+            session.query(Instrument).filter(Instrument.id == instrument_id).update({
+                Instrument.student_id: selection
+                })
+            session.commit()
+            print(" ")
+            print("Instrument assignment successfully updated!")
+        elif confirm == "n":
+            print("Instrument assignment NOT updated.")
+        else:
+            print("Invalid entry. Please enter n/Y.")
+    else:
+        print(f"Last Name: {last_name} | There is no student matching this name in the database.")
+
 
 # Student methods
 #  
