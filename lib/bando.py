@@ -3,12 +3,12 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from db.models import Instrument, Locker, Student
-from helpers import (assign_locker, assign_instrument, update_student_info, 
-                     increase_grade_levels, delete_student_record, delete_instrument_record, 
-                     delete_students_by_grade)
+
 from subfunctions.function1 import (function1a, function1b, function1c)
 from subfunctions.function2 import (function2a, function2b)
 from subfunctions.function3 import (function3a, function3b)
+from subfunctions.function4 import (function4a, function4b, function4c, function4d)
+from subfunctions.function5 import (function5a, function5b, function5c)
 
 class Cli:
     def __init__(self):
@@ -136,71 +136,17 @@ class Cli:
             print(" ")
             search_option = input("Selection: ")
             if search_option == "a":
-                Cli.function4a(self, session, search_option)
+                function4a(session, search_option)
             elif search_option == "b":
-                Cli.function4b(self, session, search_option)
+                function4b(session, search_option)
             elif search_option == "c":
-                Cli.function4c(self, session, search_option)
+                function4c(session, search_option)
             elif search_option == "d":
-                Cli.function4d(self, session, search_option)
+                function4d(session, search_option)
             elif search_option == "Q":
                 break
             else:
                 print("Invalid option, please select a, b, c, or press Q to quit.")
-
-    def function4a(self, session, search_option):
-        print(" ")
-        print("Assign or reassign locker to student.")
-        while search_option == "a":
-            print(" ")
-            last_name = input("Enter student last name: ")
-            if last_name == "Q":
-                break
-            else:
-                assign_locker(session, last_name)
-    
-    def function4b(self, session, search_option):
-        print(" ")
-        print("Assign or reassign instrument to student.")
-        while search_option == "b":
-            print(" ")
-            last_name = input("Enter student last name: ")
-            if last_name == "Q":
-                break
-            else:
-                assign_instrument(session, last_name)
-
-    def function4c(self, session, search_option):
-        print(" ")
-        print("Update student information.")
-        while search_option == "c":
-            print(" ")
-            last_name = input("Enter student last name: ")
-            if last_name == "Q":
-                break
-            else:
-                update_student_info(session, last_name)
-    
-    def function4d(self, session, search_option):
-        print(" ")
-        print("Increase all student grade levels by one year.")
-        while search_option == "d":
-            print(" ")
-            confirm = input("Confirm update ALL student grade levels to increase by one year? n/Y: ")
-            if confirm == "Y":
-                print(" ")
-                confirm_confirm = input("WARNING: Selecting Y will update ALL student grade levels to increase by one year. Press n/Y to confirm: ")
-                if confirm_confirm == "Y":
-                    increase_grade_levels(session)
-                    print(" ")
-                    print("Successfully increased all student grade levels by one year.")
-                    break
-                else: 
-                    print("Student records NOT updated.")
-                    break
-            else:
-                print("Student records NOT updated.")
-                break
 
     def function5(self, user_choice):
         while user_choice == "D":
@@ -217,39 +163,15 @@ class Cli:
             print(" ")
             search_option = input("Selection: ")
             if search_option == "a":
-                Cli.function5a(self, session, search_option)
+                function5a(session, search_option)
             elif search_option == "b":
-                Cli.function5b(self, session, search_option)
+                function5b(session, search_option)
             elif search_option == "c":
-                Cli.function5c(self, session, search_option)
+                function5c(session, search_option)
             elif search_option == "Q":
                 break
             else:
                 print("Invalid option, please select a, b, c, or press Q to quit.")
-
-    def function5a(self, session, search_option):
-        print(" ")
-        print("Delete individual student from database.")
-        while search_option == "a":
-            print(" ")
-            last_name = input("Enter student last name: ")
-            delete_student_record(session, last_name)
-
-    def function5b(self, session, search_option):
-        print(" ")
-        print("Delete individual instrument from database.")
-        while search_option == "b":
-            print(" ")
-            instrument_id = input("Enter instrument ID: ")
-            delete_instrument_record(session, instrument_id)
-
-    def function5c(self, session, search_option):
-        print(" ")
-        print("Delete students by grade level.")
-        while search_option == "c":
-            print(" ")
-            grade = input("Enter grade level to delete: ")
-            delete_students_by_grade(session, grade)
 
 if __name__ == "__main__":
     engine = create_engine("sqlite:///db/band_lockers.db")
