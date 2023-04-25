@@ -8,7 +8,8 @@ from helpers import (print_combo_by_locker_number, print_combo_by_last_name,
                      print_student_instruments, find_by_last_name, print_students_by_grade, 
                      count_students_by_grade, add_instrument, add_student, count_instruments, 
                      assign_locker, assign_instrument, update_student_info, 
-                     increase_grade_levels, delete_student_record, delete_instrument_record)
+                     increase_grade_levels, delete_student_record, delete_instrument_record, 
+                     delete_students_by_grade)
 
 class Cli:
     def __init__(self):
@@ -375,7 +376,6 @@ class Cli:
             print(" ")
             grade = input("Enter grade level to delete: ")
             delete_students_by_grade(session, grade)
-
 
 if __name__ == "__main__":
     engine = create_engine("sqlite:///db/band_lockers.db")

@@ -294,3 +294,26 @@ def delete_student_record(session, last_name):
     else:
         print(" ")
         print(f"Last Name: {last_name} | There is no student matching this name in the database.")
+
+def delete_students_by_grade(session, grade):
+    print(" ")
+    students = session.query(Student).filter(Student.grade_level == grade).all()
+    if students:
+        confirm = input(f"Confirm delete all students with grade {grade}? n/Y: ")
+        if confirm == "Y":
+            print(" ")
+            confirm_confirm = input(f"WARNING! Selecting Y will delete ALL student records with grade level {grade}. Press n/Y to confirm: ")
+            if confirm_confirm == "Y":
+                for student in students:
+                    session.delete(student)
+                    session.commit()
+                print(" ")
+                print(f"Successfully deleted all student records with grade level {grade}.")
+            else:
+                print(" ")
+                print("Student records NOT deleted.") 
+        else:
+            print(" ")
+            print("Student records NOT deleted.")
+    else:
+        print(f"No student records found with grade level {grade}.")
