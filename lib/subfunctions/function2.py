@@ -42,11 +42,13 @@ def function2b(session, search_option):
         elif instrument == "Q":
             break
         else:
-            print(f"You entered: {instrument}, which is invalid. Please select from the following list of instruments: {instrument_types}")
+            print(f"You entered: {instrument}, which is invalid.")
+            print("Please select from the following list of instruments:")
+            print([record for record in instrument_types])
 
 def count_instruments(session, instrument):
     instrument_count = session.query(Instrument).filter(Instrument.type.like(instrument)).count()
     if instrument_count > 0:
-        print(f"There are {instrument_count} {instrument}(s) currently assigned to students.")
+        print(f"There are {instrument_count} {instrument}(s) in the database.")
     if instrument_count == 0:
-        print("None of this instrument type are currently assigned to students.")
+        print("None of this instrument type are currently in the database.")

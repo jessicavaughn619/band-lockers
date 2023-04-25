@@ -41,7 +41,7 @@ def print_combo_by_last_name(session, last_name):
                 print(f"Last Name: {last_name} | This student does not have any lockers assigned.")
         else:
             options = []
-            print("There are multiple students with the last name: {last_name}")
+            print(f"There are multiple students with the last name: {last_name}")
             print(" ")
             for student in students:
                 option = (f'{last_name}, {student.first_name}', student.id)
@@ -92,7 +92,7 @@ def print_student_instruments(session, last_name):
                 print(f"Last Name: {last_name} | There are no instruments assigned to a student matching the last name entered.")
         else:
             options = []
-            print("There are multiple students with the last name: {last_name}")
+            print(f"There are multiple students with the last name: {last_name}")
             print(" ")
             for student in students:
                 option = (f'{last_name}, {student.first_name}', student.id)
