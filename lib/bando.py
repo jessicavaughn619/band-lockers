@@ -4,12 +4,12 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 import re
 from db.models import Instrument, Locker, Student
-from helpers import (print_combo_by_locker_number, print_combo_by_last_name, 
-                     print_student_instruments, find_by_last_name, print_students_by_grade, 
+from helpers import (print_student_instruments, find_by_last_name, print_students_by_grade, 
                      count_students_by_grade, add_instrument, add_student, count_instruments, 
                      assign_locker, assign_instrument, update_student_info, 
                      increase_grade_levels, delete_student_record, delete_instrument_record, 
                      delete_students_by_grade)
+from subfunctions.function1 import (function1a)
 
 class Cli:
     def __init__(self):
@@ -67,7 +67,7 @@ class Cli:
             print(" ")
             search_option = input("Selection: ")
             if search_option == "a":
-                Cli.function1a(self, session, search_option)
+                function1a(session, search_option)
             elif search_option == "b":
                 Cli.function1b(self, session, search_option)
             elif search_option == "c":
@@ -77,23 +77,6 @@ class Cli:
             else:
                 print("Invalid option, please select a, b, c, or press Q to quit.")
 
-    def function1a(self, session, search_option):
-        print(" ")
-        print("Search for locker combinations by locker number or student last name.")
-        while search_option == "a":
-            print(" ")
-            combo_search = input("Enter locker number or student last name: ")
-            print(" ")
-            int_pattern = r'\d'
-            regex = re.compile(int_pattern)
-            match = regex.search(combo_search)
-            if combo_search == "Q":
-                break
-            elif match:
-                print_combo_by_locker_number(session, locker_number=combo_search)
-            elif not match:
-                print_combo_by_last_name(session, last_name=combo_search)
-    
     def function1b(self, session, search_option):
         print(" ")
         print("Search for instrument assignments by student last name.")

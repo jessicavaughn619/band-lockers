@@ -9,6 +9,25 @@ def add_locker(session, locker):
     session.add(locker)
     session.commit()
 
+# Function 1a plus helpers
+
+def function1a(session, search_option):
+    print(" ")
+    print("Search for locker combinations by locker number or student last name.")
+    while search_option == "a":
+        print(" ")
+        combo_search = input("Enter locker number or student last name: ")
+        print(" ")
+        int_pattern = r'\d'
+        regex = re.compile(int_pattern)
+        match = regex.search(combo_search)
+        if combo_search == "Q":
+            break
+        elif match:
+            print_combo_by_locker_number(session, locker_number=combo_search)
+        elif not match:
+            print_combo_by_last_name(session, last_name=combo_search)
+
 def print_combo_by_locker_number(session, locker_number):
     combo = session.query(Locker).filter(Locker.number == locker_number).first()
     if combo:
@@ -270,27 +289,36 @@ def update_student_info(session, last_name):
         first_name = input("Enter updated student first name: ")
         last_name = input("Enter updated student last name: ")
         grade_level = input("Enter updated student grade level: ")
-        print(" ")
-        confirm = input(f"Confirm update student record to First Name: {first_name} Last Name: {last_name} Grade Level: {grade_level}? n/Y: ")
-        if confirm == "Y":
-            session.query(Student).filter(Student.id == selection).update({
-                Student.first_name: first_name,
-                Student.last_name: last_name,
-                Student.grade_level: grade_level
-                })
-            session.commit()
+        if grade_level == "9" or grade_level == "10" or grade_level == "11" or grade_level == "12":
             print(" ")
-            print("Student record successfully updated!")
-        elif confirm == "n":
-            print("Student record NOT updated.")
+            print(f"First Name: {first_name} | Last Name: {last_name} | Grade Level: {grade_level}")
+            print(" ")
+            confirm = input(f"Confirm update above student record? n/Y: ")
+            if confirm == "Y":
+                session.query(Student).filter(Student.id == selection).update({
+                    Student.first_name: first_name,
+                    Student.last_name: last_name,
+                    Student.grade_level: grade_level
+                    })
+                session.commit()
+                print(" ")
+                print("Student record successfully updated!")
+            elif confirm == "n":
+                print(" ")
+                print("Student record NOT updated.")
+            else:
+                print(" ")
+                print("Invalid entry. Please enter n/Y.")
         else:
-            print("Invalid entry. Please enter n/Y.")
+            print(" ")
+            print(f"You entered: {grade_level}, which is not a valid grade level.")
+            print("Please enter grade level 9, 10, 11, or 12.")
     else:
         print(f"Last Name: {last_name} | There is no student matching this name in the database.")
 
 def delete_student_record(session, last_name):
     students = (session.query(Student).filter(Student.last_name == last_name).all())
-    if students:
+    while students:
         options = []
         for student in students:
             option = (f'{last_name}, {student.first_name}', student.id)
@@ -312,9 +340,13 @@ def delete_student_record(session, last_name):
                 session.commit()
                 print(" ")
                 print("Student record successfully deleted!")
+            elif confirm_confirm == "Q":
+                break
             else:
                 print(" ")
                 print("Student record NOT deleted.")
+        elif confirm == "Q":
+            break
         else:
             print(" ")
             print("Student record NOT deleted.")
