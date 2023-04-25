@@ -82,14 +82,15 @@ def print_student_instruments(session, last_name):
     students = session.query(Student).filter(Student.last_name == last_name).all()
     if students:
         if len(students) == 1:
-            instrument = (session.query(Instrument).filter(Instrument.student_id == student.id).all())
-            if instrument:
-                print(f"This student has the following instrument(s) assigned: ")
-                print(" ")
-                instrument_data = ([instrument.type for instrument in instrument])
-                print(pandas.DataFrame(instrument_data, columns=["Instrument"]))
-            else:
-                print(f"Last Name: {last_name} | There are no instruments assigned to a student matching the last name entered.")
+            for student in students:
+                instrument = (session.query(Instrument).filter(Instrument.student_id == student.id).all())
+                if instrument:
+                    print(f"This student has the following instrument(s) assigned: ")
+                    print(" ")
+                    instrument_data = ([instrument.type for instrument in instrument])
+                    print(pandas.DataFrame(instrument_data, columns=["Instrument"]))
+                else:
+                    print(f"Last Name: {last_name} | There are no instruments assigned to a student matching the last name entered.")
         else:
             options = []
             print(f"There are multiple students with the last name: {last_name}")
