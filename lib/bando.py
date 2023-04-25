@@ -7,7 +7,7 @@ from db.models import Instrument, Locker, Student
 from helpers import (print_combo_by_locker_number, print_combo_by_last_name, 
                      print_student_instruments, find_by_last_name, print_students_by_grade, 
                      count_students_by_grade, add_instrument, add_student, count_instruments, 
-                     assign_locker, assign_instrument, update_student_info)
+                     assign_locker, assign_instrument, update_student_info, increase_grade_levels)
 
 class Cli:
     def __init__(self):
@@ -124,7 +124,7 @@ class Cli:
             print("Select from the following options:")
             print(" ")
             print("a: Print a list of students by grade level including a final count of students.")
-            print("b: Count the number of a certain type of instrument in inventory.")
+            print("b: Count the number of instruments in inventory.")
             print(" ")
             print("Press Q to exit to main menu.")
             print(" ")
@@ -157,7 +157,7 @@ class Cli:
 
     def function2b(self, session, search_option):
         print(" ")
-        print("Count the number of a certain type of instrument in inventory.")
+        print("Count the number of instruments in inventory.")
         print(" ")
         print("Press Q to exit to main menu.")
         while search_option == "b":
@@ -254,6 +254,7 @@ class Cli:
             print("a: Assign or reassign locker to student.")
             print("b: Assign or reassign instrument to student.")
             print("c: Update student information.")
+            print("d: Increase student grade levels.")
             print(" ")
             print("Press Q to exit to main menu.")
             print(" ")
@@ -264,6 +265,8 @@ class Cli:
                 Cli.function4b(self, session, search_option)
             elif search_option == "c":
                 Cli.function4c(self, session, search_option)
+            elif search_option == "d":
+                Cli.function4d(self, session, search_option)
             elif search_option == "Q":
                 break
             else:
@@ -302,6 +305,27 @@ class Cli:
             else:
                 update_student_info(session, last_name)
     
+    def function4d(self, session, search_option):
+        print(" ")
+        print("Increase all student grade levels by one year.")
+        while search_option == "d":
+            print(" ")
+            confirm = input("Confirm update ALL student grade levels to increase by one year? n/Y: ")
+            if confirm == "Y":
+                print(" ")
+                confirm_confirm = input("WARNING: Selecting Y will update ALL student grade levels to increase by one year. Press n/Y to confirm: ")
+                if confirm_confirm == "Y":
+                    increase_grade_levels(session)
+                    print(" ")
+                    print("Successfully increased all student grade levels by one year.")
+                    break
+                else: 
+                    print("Student records NOT updated.")
+                    break
+            else:
+                print("Student records NOT updated.")
+                break
+
     def function5(self, user_choice):
         while user_choice == "D":
             print(" ")

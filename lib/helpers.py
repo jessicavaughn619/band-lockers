@@ -184,9 +184,11 @@ def add_student(session, student):
 #     session.delete(seniors)
 #     session.commit()
 
-# def increase_grade_level(session):
-#     session.query(Student).update({Student.grade_level: Student.grade_level + 1})
-#     print("Increased all student grade levels by one year.")
+def increase_grade_levels(session):
+    session.query(Student).update({
+        Student.grade_level: Student.grade_level + 1
+        })
+    session.commit()
 
 def print_students_by_grade(session, grade):
     students = (session.query(Student).filter(Student.grade_level == grade)).all()
