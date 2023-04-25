@@ -1,5 +1,6 @@
 import pandas
 import inquirer
+import re
 from db.models import Locker, Student, Instrument
 
 # Locker methods
@@ -54,8 +55,6 @@ def print_combo_by_last_name(session, last_name):
     else:
         print(f"Last Name: {last_name} | There is no student matching this name in the database.")
 
-# Assign locker method needs work - need to identify specific locker to update
-
 def assign_locker(session, last_name):
     students = (session.query(Student).filter(Student.last_name == last_name).all())
     if students:
@@ -72,20 +71,37 @@ def assign_locker(session, last_name):
         answers = inquirer.prompt(questions)
         selection = answers['students']
         locker = input("Enter locker number to assign to student: ")
-        print(" ")
-        confirm = input(f"Confirm assign {last_name} to locker {locker}? n/Y: ")
-        if confirm == "Y":
-            session.query(Locker).filter(Locker.number == locker).update({
-                Locker.student_id: selection
-                })
-            session.commit()
-            print(" ")
-            print("Locker assignment successfully updated!")
-        elif confirm == "n":
-            print("Locker assignment NOT updated.")
+        int_pattern = r'\d'
+        regex = re.compile(int_pattern)
+        match = regex.search(locker)
+        if match:
+            exists = session.query(Locker).filter(Locker.number == locker).first()
+            if exists:
+                print(" ")
+                print(f"Last Name: {last_name} | Locker: {locker}")
+                print(" ")
+                confirm = input(f"Confirm above locker assignment? n/Y: ")
+                if confirm == "Y":
+                    session.query(Locker).filter(Locker.number == locker).update({
+                        Locker.student_id: selection
+                        })
+                    session.commit()
+                    print(" ")
+                    print("Locker assignment successfully updated!")
+                elif confirm == "n":
+                    print(" ")
+                    print("Locker assignment NOT updated.")
+                else:
+                    print(" ")
+                    print("Invalid entry. Please enter n/Y.")
+            else:
+                print(" ")
+                print(f"Locker {locker} does not exist in the database. Please add this locker before assigning it, or choose an existing locker number to assign.")
         else:
-            print("Invalid entry. Please enter n/Y.")
+            print(" ")
+            print("Invalid entry. Locker number must be an integer.")
     else:
+        print(" ")
         print(f"Last Name: {last_name} | There is no student matching this name in the database.")
 
 # Instrument methods
@@ -196,11 +212,6 @@ def delete_instrument_record(session, id):
 def add_student(session, student):
     session.add(student)
     session.commit()
-
-# def delete_seniors(session):
-#     seniors = session.query(Student).filter(Student.grade_level == 12)
-#     session.delete(seniors)
-#     session.commit()
 
 def increase_grade_levels(session):
     session.query(Student).update({

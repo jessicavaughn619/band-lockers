@@ -208,18 +208,20 @@ class Cli:
                 last_name = input("Enter student last name: ")
                 grade_level = input("Enter student grade level: ")
                 print(" ")
-                print("Add the following new student to the database?")
-                print(f"First Name: {first_name} Last Name: {last_name} Grade Level: {grade_level}")
+                print(f"First Name: {first_name} | Last Name: {last_name} | Grade Level: {grade_level}")
                 print(" ")
-                confirm = input("n/Y: ")
+                confirm = input("Confirm add above student to database? n/Y: ")
                 if confirm == "n":
+                    print(" ")
                     print("Student NOT added to database.")
                 elif confirm == "Y":
                     add_student(session, Student(first_name=first_name, last_name=last_name, grade_level=grade_level))
+                    print(" ")
                     print("New student successfully added to database!")
                 elif confirm == "Q":
                     break
                 else:
+                    print (" ")
                     print("Invalid entry. Please enter n/Y or press Q to exit to main menu.")
 
     def function3b(self, session, search_option):
@@ -232,14 +234,15 @@ class Cli:
                 break
             else:
                 print(" ")
-                print("Add the following new instrument to the database?")
                 print(f"Type: {type}")
                 print(" ")
-                confirm = input("n/Y: ")
+                confirm = input("Confirm add above instrument to database? n/Y: ")
                 if confirm == "n":
+                    print(" ")
                     print("Instrument NOT added to database.")
                 elif confirm == "Y":
                     add_instrument(session, Instrument(type=type))
+                    print(" ")
                     print("New instrument successfully added to database!")
                 elif confirm == "Q":
                     break
