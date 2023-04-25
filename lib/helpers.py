@@ -155,8 +155,9 @@ def assign_instrument(session, last_name):
         answers = inquirer.prompt(questions)
         selection = answers['students']
         instrument_id = input("Enter instrument ID to assign to student: ")
+        instrument = session.query(Instrument).filter(Instrument.id == instrument_id).first()
         print(" ")
-        confirm = input(f"Confirm assign {last_name} to instrument {instrument_id}? n/Y: ")
+        confirm = input(f"Confirm assign ID: {instrument_id} Type: {instrument.type} to Last Name: {last_name}? n/Y: ")
         if confirm == "Y":
             session.query(Instrument).filter(Instrument.id == instrument_id).update({
                 Instrument.student_id: selection
@@ -201,5 +202,41 @@ def find_by_last_name(session, last_name):
     if students:
         student_data = ([(student.last_name, student.first_name, student.grade_level) for student in students])
         print(pandas.DataFrame(student_data, columns=["Last Name", "First Name", "Grade"]))
+    else:
+        print(f"Last Name: {last_name} | There is no student matching this name in the database.")
+
+def update_student_info(session, last_name):
+    students = (session.query(Student).filter(Student.last_name == last_name).all())
+    if students:
+        options = []
+        for student in students:
+            option = (f'{last_name}, {student.first_name}', student.id)
+            options.append(option)
+        questions = [
+            inquirer.List('students',
+                            message="Please select the correct student: ",
+                            choices=options,
+                            ),
+                            ]
+        answers = inquirer.prompt(questions)
+        selection = answers['students']
+        first_name = input("Enter updated student first name: ")
+        last_name = input("Enter updated student last name: ")
+        grade_level = input("Enter updated student grade level: ")
+        print(" ")
+        confirm = input(f"Confirm update student record to First Name: {first_name} Last Name: {last_name} Grade Level: {grade_level}? n/Y: ")
+        if confirm == "Y":
+            session.query(Student).filter(Student.id == selection).update({
+                Student.first_name: first_name,
+                Student.last_name: last_name,
+                Student.grade_level: grade_level
+                })
+            session.commit()
+            print(" ")
+            print("Student record successfully updated!")
+        elif confirm == "n":
+            print("Student record NOT updated.")
+        else:
+            print("Invalid entry. Please enter n/Y.")
     else:
         print(f"Last Name: {last_name} | There is no student matching this name in the database.")

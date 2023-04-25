@@ -7,7 +7,7 @@ from db.models import Instrument, Locker, Student
 from helpers import (print_combo_by_locker_number, print_combo_by_last_name, 
                      print_student_instruments, find_by_last_name, print_students_by_grade, 
                      count_students_by_grade, add_instrument, add_student, count_instruments, 
-                     assign_locker, assign_instrument)
+                     assign_locker, assign_instrument, update_student_info)
 
 class Cli:
     def __init__(self):
@@ -295,7 +295,12 @@ class Cli:
         print(" ")
         print("Update student information.")
         while search_option == "c":
-            pass
+            print(" ")
+            last_name = input("Enter student last name: ")
+            if last_name == "Q":
+                break
+            else:
+                update_student_info(session, last_name)
     
     def function5(self, user_choice):
         while user_choice == "D":
