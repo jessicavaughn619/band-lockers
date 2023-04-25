@@ -3,12 +3,12 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from db.models import Instrument, Locker, Student
-from helpers import (add_instrument, add_student, 
-                     assign_locker, assign_instrument, update_student_info, 
+from helpers import (assign_locker, assign_instrument, update_student_info, 
                      increase_grade_levels, delete_student_record, delete_instrument_record, 
                      delete_students_by_grade)
 from subfunctions.function1 import (function1a, function1b, function1c)
 from subfunctions.function2 import (function2a, function2b)
+from subfunctions.function3 import (function3a, function3b)
 
 class Cli:
     def __init__(self):
@@ -112,66 +112,13 @@ class Cli:
             print(" ")
             search_option = input("Selection: ")
             if search_option == "a":
-                Cli.function3a(self, session, search_option)
+                function3a(session, search_option)
             elif search_option == "b":
-                Cli.function3b(self, session, search_option)
+                function3b(session, search_option)
             elif search_option == "Q":
                 break
             else:
                 print("Invalid option, please select a, b, or press Q to quit.")
-
-    def function3a(self, session, search_option):
-        print(" ")
-        print("Add new student to database.")
-        while search_option == "a":
-            print(" ")
-            first_name = input("Enter student first name: ")
-            if first_name == "Q":
-                break
-            else:
-                last_name = input("Enter student last name: ")
-                grade_level = input("Enter student grade level: ")
-                print(" ")
-                print(f"First Name: {first_name} | Last Name: {last_name} | Grade Level: {grade_level}")
-                print(" ")
-                confirm = input("Confirm add above student to database? n/Y: ")
-                if confirm == "n":
-                    print(" ")
-                    print("Student NOT added to database.")
-                elif confirm == "Y":
-                    add_student(session, Student(first_name=first_name, last_name=last_name, grade_level=grade_level))
-                    print(" ")
-                    print("New student successfully added to database!")
-                elif confirm == "Q":
-                    break
-                else:
-                    print (" ")
-                    print("Invalid entry. Please enter n/Y or press Q to exit to main menu.")
-
-    def function3b(self, session, search_option):
-        print(" ")
-        print("Add new instrument to database.")
-        while search_option == "b":
-            print(" ")
-            type = input("Enter instrument type: ")
-            if type == "Q":
-                break
-            else:
-                print(" ")
-                print(f"Type: {type}")
-                print(" ")
-                confirm = input("Confirm add above instrument to database? n/Y: ")
-                if confirm == "n":
-                    print(" ")
-                    print("Instrument NOT added to database.")
-                elif confirm == "Y":
-                    add_instrument(session, Instrument(type=type))
-                    print(" ")
-                    print("New instrument successfully added to database!")
-                elif confirm == "Q":
-                    break
-                else:
-                    print("Invalid entry. Please enter n/Y or press Q to exit to main menu.")
     
     def function4(self, user_choice):
         while user_choice == "U":

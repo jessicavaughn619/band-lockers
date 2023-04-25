@@ -1,7 +1,5 @@
-from db.models import Locker, Student, Instrument
-import inquirer
+from db.models import Student, Instrument
 import pandas
-import re
 
 def function2a(session, search_option):
     print(" ")
