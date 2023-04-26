@@ -34,24 +34,30 @@ def assign_locker(session, last_name):
         match = regex.search(locker)
         if match:
             exists = session.query(Locker).filter(Locker.number == locker).first()
-            if exists:
+            if exists.student_id:
                 print(" ")
-                print(f"Last Name: {last_name} | Locker: {locker}")
-                print(" ")
-                confirm = input(f"Confirm above locker assignment? n/Y: ")
-                if confirm == "Y":
-                    session.query(Locker).filter(Locker.number == locker).update({
-                        Locker.student_id: selection
-                        })
-                    session.commit()
+                reassign = input(f"Locker: {locker} is currently assigned to student ID: {exists.student_id}. Reassign? n/Y: ")
+                if reassign == "Y":
                     print(" ")
-                    print("Locker assignment successfully updated!")
-                elif confirm == "n":
+                    print(f"Last Name: {last_name} | Locker: {locker}")
                     print(" ")
-                    print("Locker assignment NOT updated.")
+                    confirm = input(f"Confirm above locker assignment? n/Y: ")
+                    if confirm == "Y":
+                        session.query(Locker).filter(Locker.number == locker).update({
+                            Locker.student_id: selection
+                            })
+                        session.commit()
+                        print(" ")
+                        print("Locker assignment successfully updated!")
+                    elif confirm == "n":
+                        print(" ")
+                        print("Locker assignment NOT updated.")
+                    else:
+                        print(" ")
+                        print("Invalid entry. Please enter n/Y.")
                 else:
                     print(" ")
-                    print("Invalid entry. Please enter n/Y.")
+                    print("Locker assignment NOT updated.")
             else:
                 print(" ")
                 print(f"Locker {locker} does not exist in the database.")
@@ -95,24 +101,30 @@ def assign_instrument(session, last_name):
         match = regex.search(instrument_id)
         if match:
             instrument = session.query(Instrument).filter(Instrument.id == instrument_id).first()
-            if instrument:
+            if instrument.student_id:
                 print(" ")
-                print(f"Instrument ID: {instrument_id} | Type: {instrument.type} | Last Name: {last_name}")
-                print(" ")
-                confirm = input(f"Confirm above instrument assignment? n/Y: ")
-                if confirm == "Y":
-                    session.query(Instrument).filter(Instrument.id == instrument_id).update({
-                        Instrument.student_id: selection
-                        })
-                    session.commit()
+                reassign = input(f"Instrument ID: {instrument_id} is currently assigned to student ID: {instrument.student_id}. Reassign? n/Y: ")
+                if reassign == "Y":
                     print(" ")
-                    print("Instrument assignment successfully updated!")
-                elif confirm == "n":
+                    print(f"Instrument ID: {instrument_id} | Type: {instrument.type} | Last Name: {last_name}")
                     print(" ")
-                    print("Instrument assignment NOT updated.")
+                    confirm = input(f"Confirm above instrument assignment? n/Y: ")
+                    if confirm == "Y":
+                        session.query(Instrument).filter(Instrument.id == instrument_id).update({
+                            Instrument.student_id: selection
+                            })
+                        session.commit()
+                        print(" ")
+                        print("Instrument assignment successfully updated!")
+                    elif confirm == "n":
+                        print(" ")
+                        print("Instrument assignment NOT updated.")
+                    else:
+                        print(" ")
+                        print("Invalid entry. Please enter n/Y.")
                 else:
                     print(" ")
-                    print("Invalid entry. Please enter n/Y.")
+                    print("Instrument assignment NOT updated.")
             else:
                 print(" ")
                 print(f"Instrument with ID: {instrument_id} does not exist in the database.") 
