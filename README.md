@@ -19,6 +19,10 @@ BANDO allows the user to complete full CRUD actions through the CLI. The main me
 
 This CLI is set up specifically for HIGH SCHOOL BAND student data, but could be adapted for other grade levels or educational disciplines.
 
+## Walkthrough
+
+<a href="https://www.youtube.com/watch?v=jzYhgUnqOOo" title="Locker Inventory CLI Walkthrough"><img src="./images/cli-play.jpeg" height="200px" alt="Locker Inventory CLI Walkthrough" /></a>
+
 ## Installation
 
 Fork and clone a copy of the repository. This project requires python3 and pip to be installed on your computer. Install dependencies by running pipenv install, then start up a virtual environment by running pipenv shell.
